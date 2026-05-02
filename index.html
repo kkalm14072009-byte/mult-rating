@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МультРейтинг - Осознанный выбор мультфильмов</title>
+    <meta name="description" content="Интерактивный помощник для выбора мультфильмов на основе анализа их влияния на детскую психику">
+    <meta name="author" content="Калмыкова Екатерина Дмитриевна, 10 класс, МОУ ИРМО СОШ п. Молодежный">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { font-family: 'Roboto', sans-serif; box-sizing: border-box; }
+        body { background-color: #0f172a; color: #e2e8f0; margin: 0; line-height: 1.6; }
+        
+        /* Навигация */
+        nav { background-color: #1e293b; padding: 1rem 2rem; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #818cf8; display: flex; align-items: center; gap: 10px; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: #cbd5e1; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #818cf8; }
+        
+        /* Герой-секция */
+        .hero { 
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%);
+            padding: 100px 20px 60px; text-align: center; position: relative; overflow: hidden; 
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), rgba(0,0,0,0));
+            background-repeat: repeat; background-size: 200px 200px; opacity: 0.3;
+            animation: twinkle 5s ease-in-out infinite;
+        }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.5; } }
+        
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; color: white; position: relative; z-index: 1; }
+        .hero p { font-size: 1.25rem; color: #c7d2fe; margin-bottom: 2rem; position: relative; z-index: 1; }
+        
+        .search-box { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
+        .search-input { width: 100%; padding: 15px 50px 15px 25px; border-radius: 50px; border: none; background: white; color: #1e293b; font-size: 1rem; outline: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .search-btn { position: absolute; right: 5px; top: 5px; background: #4f46e5; color: white; border: none; padding: 10px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+        .search-btn:hover { background: #4338ca; }
+        
+        section { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
+        h2 { text-align: center; font-size: 2rem; margin-bottom: 40px; color: #f1f5f9; }
+        
+        .filters { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
+        .filter-btn { padding: 10px 20px; border-radius: 50px; border: none; cursor: pointer; background: #334155; color: #cbd5e1; font-weight: 500; transition: all 0.2s; }
+        .filter-btn.active { background: #4f46e5; color: white; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3); }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        
+        .card { background: #1e293b; border-radius: 1rem; overflow: hidden; border: 1px solid #334155; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2); }
+        .card-img-container { position: relative; height: 200px; }
+        .card-img { width: 100%; height: 100%; object-fit: cover; }
+        .age-badge { position: absolute; top: 10px; right: 10px; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; color: white; }
+        .age-0 { background: #10b981; }
+        .age-3 { background: #3b82f6; }
+        .age-6 { background: #f59e0b; }
+        .age-12 { background: #ef4444; }
+        
+        .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-title { font-size: 1.25rem; font-weight: bold; margin-bottom: 10px; color: #f1f5f9; }
+        .card-desc { color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .tags-container { margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 5px; }
+        .tag { padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+        .tag:hover { transform: scale(1.05); }
+        .tag-main { border: 2px solid rgba(255,255,255,0.3); }
+        .tag-Нереально { background: #8b5cf6; color: white; }
+        .tag-Динамично { background: #f59e0b; color: white; }
+        .tag-УчимсяДружить { background: #10b981; color: white; }
+        .tag-Копирование { background: #ef4444; color: white; }
+        .tag-other { background: #475569; color: #e2e8f0; }
+        
+        .rating-row { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; color: #f1f5f9; font-weight: bold; }
+        .heart-icon { color: #ef4444; }
+        .card-actions { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #334155; padding-top: 15px; }
+        .save-btn { background: none; border: none; cursor: pointer; color: #64748b; transition: color 0.2s; }
+        .save-btn.active { color: #fbbf24; }
+        .details-btn { background: #4f46e5; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: background 0.2s; }
+        .details-btn:hover { background: #4338ca; }
+        
+        .about-grid { display: grid; grid-cols: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .feature-card { background: #1e293b; padding: 20px; border-radius: 12px; text-align: center; border: 1px solid #334155; }
+        .feature-icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .science-block { background: #1e293b; padding: 30px; border-radius: 12px; border-left: 4px solid #4f46e5; }
+        .science-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .science-item { background: #0f172a; padding: 15px; border-radius: 8px; }
+        .science-title { font-weight: bold; margin-bottom: 5px; }
+        .text-purple { color: #a78bfa; }
+        .text-amber { color: #fbbf24; }
+        .text-emerald { color: #34d399; }
+        .text-red { color: #f87171; }
+        
+        footer { background: #020617; padding: 30px 20px; text-align: center; color: #94a3b8; margin-top: 60px; border-top: 1px solid #1e293b; }
+        
+        /* Модальное окно мультфильма */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
+        .modal.active { display: flex; }
+        .modal-content { background: #1e293b; border-radius: 1rem; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; border: 1px solid #334155; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; color: #94a3b8; cursor: pointer; line-height: 1; z-index: 10; }
+        .modal-body { padding: 30px; }
+        .modal-img { width: 100%; height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px; }
+        
+        .section-title { font-size: 1.2rem; font-weight: bold; margin: 25px 0 10px; color: #f1f5f9; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #334155; padding-bottom: 5px; }
+        .section-text { color: #cbd5e1; font-size: 0.95rem; white-space: pre-line; text-align: justify; }
+        .highlight-box { background: #312e81; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px solid #4f46e5; }
+        
+        .comment-box { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; margin-bottom: 10px; resize: vertical; }
+        .submit-btn { background: #4f46e5; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        
+        /* Модальное окно тега */
+        .tag-modal-content {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 2px solid;
+            max-width: 600px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">🌙 МультРейтинг</div>
+        <div class="nav-links">
+            <a href="#home">Главная</a>
+            <a href="#catalog">Каталог</a>
+            <a href="#saved">Сохранённые</a>
+            <a href="#about">О проекте</a>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <h1>Разработка интерактивного помощника «МультРейтинг»</h1>
+        <p>Для осознанного выбора мультфильмов на основе анализа их влияния на детскую психику</p>
+        <div class="search-box">
+            <input type="text" id="searchInput" class="search-input" placeholder="Введите название мультфильма..." onkeypress="if(event.key==='Enter') searchCartoons()">
+            <button onclick="searchCartoons()" class="search-btn">Найти</button>
+        </div>
+        <div style="margin-top: 40px; position: relative; z-index: 1;">
+            <img src="https://static1.parovoz.tv/assets/lantern/frames/frame_16.jpg" alt="Мультфильмы" style="max-width: 100%; width: 800px; border-radius: 20px; border: 4px solid rgba(99, 102, 241, 0.3); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);">
+        </div>
+    </section>
+
+    <section style="padding-top: 0; padding-bottom: 20px;">
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterAge('all')">Все</button>
+            <button class="filter-btn" onclick="filterAge('0')">0+ лет</button>
+            <button class="filter-btn" onclick="filterAge('3')">3+ лет</button>
+            <button class="filter-btn" onclick="filterAge('6')">6+ лет</button>
+            <button class="filter-btn" onclick="filterAge('12')">12+ лет</button>
+        </div>
+    </section>
+
+    <section id="catalog">
+        <h2>Каталог мультфильмов</h2>
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterCategory('all')">Все</button>
+            <button class="filter-btn" onclick="filterCategory('russian')">Российские</button>
+            <button class="filter-btn" onclick="filterCategory('foreign')">Зарубежные</button>
+        </div>
+        <div id="cartoonsGrid" class="grid"></div>
+    </section>
+
+    <section id="saved" style="background: #1e293b; border-top: 1px solid #334155; border-bottom: 1px solid #334155;">
+        <h2>Сохранённые мультфильмы</h2>
+        <div id="savedGrid" class="grid"></div>
+    </section>
+
+    <section id="about">
+        <h2>О проекте</h2>
+        <div class="about-grid">
+            <div class="feature-card"><div class="feature-icon">🔍</div><h3>Поиск</h3><p style="color:#94a3b8">Быстрый поиск по названию</p></div>
+            <div class="feature-card"><div class="feature-icon">🏷️</div><h3>Авторские теги</h3><p style="color:#94a3b8">#Нереально, #Динамично, #УчимсяДружить, #Копирование</p></div>
+            <div class="feature-card"><div class="feature-icon">📊</div><h3>Анализ</h3><p style="color:#94a3b8">Поведение героев и темы</p></div>
+        </div>
+        <div class="science-block">
+            <h3 style="margin-top:0; color:white;">📚 Научная база проекта</h3>
+            <div class="science-grid">
+                <div class="science-item"><div class="science-title text-purple">#Нереально</div><p style="font-size:0.9rem; color:#cbd5e1;"><b>M. Downes (2025):</b> мультфильмы с высоким уровнем фантастичности перегружают мозг ребенка, нарушая концентрацию внимания.</p></div>
+                <div class="science-item"><div class="science-title text-amber">#Динамично</div><p style="font-size:0.9rem; color:#cbd5e1;"><b>N. Babio (2025):</b> высокая скорость смены кадров ведёт к гиперактивности и вспышкам гнева у детей.</p></div>
+                <div class="science-item"><div class="science-title text-emerald">#УчимсяДружить</div><p style="font-size:0.9rem; color:#cbd5e1;"><b>Qian Zhang (2021):</b> контент с эмпатией и взаимовыручкой снижает уровень агрессии у детей.</p></div>
+                <div class="science-item"><div class="science-title text-red">#Копирование</div><p style="font-size:0.9rem; color:#cbd5e1;"><b>S. Amudhan (2024):</b> дети склонны перенимать личность и поведение любимого героя.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p style="font-size: 1.2rem; font-weight: bold; color: #f1f5f9;">&copy; 2026 МультРейтинг. Все права защищены.</p>
+        <p>Учебный проект</p>
+        <p>10 класс, МОУ ИРМО «СОШ п. Молодежный»</p>
+        <p style="font-size: 0.9rem; margin-top: 10px;">Руководитель: Габец Дарья Дмитриевна</p>
+    </footer>
+
+    <!-- Модальное окно мультфильма -->
+    <div id="cartoonModal" class="modal" onclick="if(event.target===this) closeModal()">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="modal-body">
+                <img id="mModalImg" src="" alt="" class="modal-img">
+                <h2 id="mModalTitle" style="text-align:left; margin-bottom:10px;"></h2>
+                <div id="mModalTags" class="tags-container" style="margin-bottom:20px;"></div>
+                
+                <div class="section-title">📖 Краткий сюжет</div>
+                <p id="mModalDesc" class="section-text"></p>
+                
+                <div class="section-title">🎭 Поведение героев</div>
+                <p id="mModalBehavior" class="section-text"></p>
+                
+                <div class="section-title">🏷️ Темы</div>
+                <p id="mModalThemes" class="section-text"></p>
+
+                <div class="highlight-box">
+                    <div class="section-title" style="margin-top:0; color:#a78bfa;">🔬 Почему присвоен этот тег?</div>
+                    <p id="mModalTagReason" class="section-text" style="color:#e2e8f0;"></p>
+                    
+                    <div class="section-title" style="color:#f87171;">⚠️ Влияние на ребёнка</div>
+                    <p id="mModalImpact" class="section-text" style="color:#e2e8f0;"></p>
+                </div>
+
+                <div style="margin-top:30px; border-top:1px solid #334155; padding-top:20px;">
+                    <div class="section-title">❤️ Оцените мультфильм</div>
+                    <div id="mModalRating" style="font-size:2rem; cursor:pointer; color:#64748b;"></div>
+                    
+                    <div class="section-title">💬 Комментарии родителей</div>
+                    <div id="mModalComments" style="max-height:200px; overflow-y:auto; margin-bottom:10px;"></div>
+                    <textarea id="mModalCommentInput" class="comment-box" rows="3" placeholder="Напишите ваш отзыв..."></textarea>
+                    <button onclick="addComment()" class="submit-btn">Отправить комментарий</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно тега -->
+    <div id="tagModal" class="modal" onclick="if(event.target===this) closeTagModal()" style="background:rgba(15, 23, 42, 0.95);">
+        <div class="modal-content tag-modal-content" id="tagModalContent">
+            <span class="close-modal" onclick="closeTagModal()">&times;</span>
+            <div class="modal-body">
+                <h2 id="tModalTitle" style="text-align:left; color: white; margin-bottom: 20px;"></h2>
+                <div id="tModalBody" style="color: #cbd5e1;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tagInfo = {
+            'Нереально': { title: '#Нереально', color: '#8b5cf6', researcher: 'M. Downes et al. (2025)', study: 'Toddlers Viewing Fantastical Cartoons', finding: 'Мультфильмы с высоким уровнем «фантастичности» перегружают мозг ребенка.', impact: 'Возможная рассеянность, снижение концентрации.', recommendation: 'Ограничивать время просмотра и обсуждать вымысел.' },
+            'Динамично': { title: '#Динамично', color: '#f59e0b', researcher: 'N. Babio et al. (2025)', study: 'Sleep duration and screen time', finding: 'Высокая скорость смены кадров ведёт к гиперактивности.', impact: 'Перевозбуждение, трудности с засыпанием.', recommendation: 'Не смотреть перед сном.' },
+            'УчимсяДружить': { title: '#УчимсяДружить', color: '#10b981', researcher: 'Qian Zhang et al. (2021)', study: 'Positive Effects of Prosocial Cartoon Viewing', finding: 'Контент с эмпатией снижает агрессию у детей.', impact: 'Снижение агрессии, развитие эмпатии.', recommendation: 'Идеальны для развития личности.' },
+            'Копирование': { title: '#Копирование', color: '#ef4444', researcher: 'S. Amudhan et al. (2024)', study: 'The cartoon character syndrome', finding: 'Дети склонны перенимать личность любимого героя.', impact: 'Копирование нежелательного поведения.', recommendation: 'Обсуждать поступки героев после просмотра.' }
+        };
+
+        // БАЗА ДАННЫХ: desc (короткий) и fullStory (полный)
+        const cartoons = [
+            { 
+                id: 1, title: "Смешарики", age: "0+", cat: "russian", 
+                desc: "О приключениях круглых зверушек в Ромашковой долине. Каждая серия — история о дружбе.", 
+                fullStory: "В Ромашковой долине живут девять круглых зверушек-смешариков. Каждая серия — отдельная история, где персонажи сталкиваются с разными жизненными ситуациями: дружба, споры, обиды, радости, поиск смысла. В отличие от многих мультфильмов, здесь нет «плохих» и «хороших» — каждый герой многогранен. Серии поднимают взрослые темы: страх одиночества, принятие старения, творческие кризисы, зависть, ответственность. При этом всё подано без назидательности, с мягким юмором.", 
+                img: "https://zastavki.gas-kvas.com/uploads/posts/2024-09/zastavki-gas-kvas-com-j74g-p-zastavki-multseriala-smeshariki-1.jpg", 
+                mainTag: "УчимсяДружить", tags: ["Психология", "Дружба"], 
+                behavior: "• Крош — энергичный, импульсивный. Может нечаянно обидеть, но всегда искренне извиняется.\n• Ёжик — тревожный, ранимый. В трудных ситуациях проявляет смелость ради друзей.\n• Бараш — творческий, капризный. Учится уважать чувства других.\n• Нюша — мечтательная, иногда манипулятивная.\n• Лосяш — интеллектуал, признаёт ошибки.\n• Совунья — заботливая «бабушка» долины.\n• Кар-Карыч — мудрый старец.\n\nВсе конфликты решаются через диалог. Агрессия отсутствует.", 
+                themes: "Дружба, взаимопомощь, принятие себя, честность, поиск смысла.",
+                tagReason: "Согласно Qian Zhang (2021), контент с взаимовыручкой снижает агрессию. В «Смешариках» персонажи с разными характерами учатся договариваться и поддерживать друг друга даже в конфликтах.",
+                impact: "Положительное: учит мирному разрешению конфликтов, эмпатии. Отрицательное: некоторые серии поднимают сложные философские темы."
+            },
+            { 
+                id: 2, title: "Лунтик", age: "0+", cat: "russian", 
+                desc: "Инопланетянин Лунтик падает на Землю и учится жить среди насекомых.", 
+                fullStory: "На Луне живёт необычное существо — Лунтик. Однажды он случайно падает на Землю и оказывается в мире насекомых. Лунтик ничего не знает о земных правилах, но он открыт, добр и готов учиться. Постепенно он находит друзей: кузнечика Кузю, божью коровку Милу, пчелёнка, а также старших наставников — дедушку Шера и бабушку Капу. Каждая серия — это маленький жизненный урок: как извиняться, когда виноват; как делиться; как справляться с обидой. В мультфильме нет ни одного по-настоящему злого персонажа.", 
+                img: "https://i.pinimg.com/736x/12/78/c2/1278c28276fb927e1709bdbeb11d9670.jpg", 
+                mainTag: "УчимсяДружить", tags: ["Доброта", "Адаптация"], 
+                behavior: "• Лунтик — воплощённая доброта. Не умеет злиться, всегда извиняется.\n• Кузя — энергичный, иногда хвастливый, но преданный.\n• Мила — нежная, капризная.\n• Вупсень и Пупсень — вредины, которых перевоспитывают добротой.\n\nАгрессия отсутствует.", 
+                themes: "Доброта, адаптация, дружба, вежливость.",
+                tagReason: "Согласно Qian Zhang (2021), просмотр контента с эмпатией снижает агрессию. «Лунтик» — один из самых безопасных мультфильмов.",
+                impact: "Положительное: чёткие модели доброго поведения, спокойный темп."
+            },
+            { 
+                id: 3, title: "Маша и Медведь", age: "3+", cat: "russian", 
+                desc: "Гиперактивная девочка Маша постоянно нарушает покой Медведя своими шалостями.", 
+                fullStory: "В лесу живёт добродушный Медведь, мечтающий о покое. Его спокойную жизнь постоянно нарушает маленькая девочка Маша — гиперактивная, бесстрашная и не знающая слова «нельзя». Каждая серия — её новая шалость: она то разрушает забор, то устраивает потоп, то приводит диких зверей. Медведь терпеливо исправляет последствия.", 
+                img: "https://i-igrushki.ru/upload/medialibrary/f55/f55fe35cd1d49a2191968884848dd2ff.jpg", 
+                mainTag: "Динамично", tags: ["Копирование", "Озорство"], 
+                behavior: "• Маша — импульсивная, не знает слова «нельзя». Нарушает границы, ломает вещи, манипулирует жалостью.\n• Медведь — терпеливый, но не устанавливает границ, поощряя плохое поведение.\n\nТемы: вседозволенность, отсутствие границ.", 
+                themes: "Озорство, отношения ребёнка и взрослого, вседозволенность.",
+                tagReason: "По N. Babio (2025) быстрый темп ведёт к гиперактивности. По S. Amudhan (2024) дети копируют истерики и капризы Маши.",
+                impact: "Положительное: юмор, музыка. Отрицательное: копирование капризов, перегрузка нервной системы."
+            },
+            { 
+                id: 4, title: "Барбоскины", age: "0+", cat: "russian", 
+                desc: "В большой семье собак Барбоскиных растут пятеро детей с разными характерами.", 
+                fullStory: "В большой семье собак Барбоскиных растут пятеро детей: Роза, Дружок, Гена, Лиза и Малыш. У каждого свой характер и увлечения, из-за чего часто возникают конфликты. Но в любой ситуации они остаются семьёй.", 
+                img: "https://i.pinimg.com/videos/thumbnails/originals/2b/01/f2/2b01f20133d16e31de27b72ef63295a1.0000000.jpg", 
+                mainTag: "УчимсяДружить", tags: ["Семья", "Ответственность"], 
+                behavior: "• Роза — следит за модой, иногда эгоистична, но заботится о младших.\n• Дружок — спортивный, грубоватый, но быстро остывает.\n• Гена — умный, иногда зазнаётся.\n• Лиза — творческая, иногда навязчива.\n• Малыш — любопытный, создаёт беспорядок.\n\nБратья и сёстры ссорятся, но учатся договариваться.", 
+                themes: "Семейные отношения, индивидуальность, компромисс.",
+                tagReason: "Согласно Qian Zhang (2021), контент с взаимовыручкой снижает агрессию. Барбоскины всегда помогают друг другу.",
+                impact: "Положительное: примеры семейных отношений. Отрицательное: некоторые серии содержат манипуляции."
+            },
+            { 
+                id: 5, title: "Винни-Пух (советский)", age: "0+", cat: "russian", 
+                desc: "Приключения медвежонка Винни-Пуха и его друзей в Волшебном лесу.", 
+                fullStory: "В Волшебном лесу живут медвежонок Винни-Пух, поросёнок Пятачок, ослик Иа, Кролик и Сова. Пух постоянно попадает в забавные ситуации из-за любви к мёду, а друзья всегда приходят на помощь.", 
+                img: "https://avatars.mds.yandex.net/i?id=95e94f42722da5d39e36efd7bd48e3f42bb45299-5141058-images-thumbs&n=13", 
+                mainTag: "УчимсяДружить", tags: ["Дружба", "Юмор"], 
+                behavior: "• Винни-Пух — добрый, наивный, никогда не действует со злым умыслом.\n• Пятачок — пугливый, но преданный.\n• Ослик Иа — пессимист, которого друзья подбадривают.\n\nАгрессия отсутствует.", 
+                themes: "Дружба, юмор, взаимопомощь, забота.",
+                tagReason: "Согласно Qian Zhang (2021), эмпатичный контент снижает агрессию. Герои демонстрируют бескорыстную заботу.",
+                impact: "Положительное: спокойный темп, добрый юмор."
+            },
+            { 
+                id: 6, title: "Чебурашка и Крокодил Гена", age: "0+", cat: "russian", 
+                desc: "О дружбе ушастого зверька Чебурашки и Крокодила Гены.", 
+                fullStory: "Неизвестный науке зверёк Чебурашка приезжает в город и находит друга — крокодила Гену. Вместе они строят дом для друзей, куда приходят все, кто хочет найти товарищей.", 
+                img: "https://i01.fotocdn.net/s132/34ff69815ff319ce/public_pin_l/2964611630.jpg", 
+                mainTag: "УчимсяДружить", tags: ["Доброта", "Дружба"], 
+                behavior: "• Чебурашка — добрый, наивный, открытый.\n• Гена — серьёзный, заботливый.\n• Шапокляк — вредная старушка, чьё поведение показано как неправильное.", 
+                themes: "Настоящая дружба, бескорыстная помощь, доброта.",
+                tagReason: "Согласно Qian Zhang (2021), контент с эмпатией снижает агрессию. Чебурашка и Гена показывают пример бескорыстной дружбы.",
+                impact: "Положительное: спокойный темп, понятное противопоставление добра и зла."
+            },
+            { 
+                id: 7, title: "Ёжик в тумане", age: "0+", cat: "russian", 
+                desc: "Философская притча о ёжике, который заблудился в тумане.", 
+                fullStory: "Ёжик идёт к другу Медвежонку считать звёзды, но по дороге попадает в туман. В тумане он встречает разных существ, пугается, но продолжает путь.", 
+                img: "https://avatars.mds.yandex.net/get-vh/5332272/2a00000195cdebc0232e57b6434ed670c988/1920x1080q15", 
+                mainTag: "", tags: ["Философия", "Природа"], 
+                behavior: "Ёжик проявляет любознательность и тревогу одновременно. Он идёт к цели, несмотря на страх. Медвежонок терпеливо ждёт и не обижается.", 
+                themes: "Философское восприятие, дружба, красота природы, страх.",
+                tagReason: "Мультфильм не подходит ни под один из четырёх тегов в явном виде. Это философская притча.",
+                impact: "Положительное: развивает воображение. Отрицательное: может напугать чувствительных детей."
+            },
+            { 
+                id: 8, title: "Фиксики", age: "3+", cat: "russian", 
+                desc: "Маленькие человечки-фиксики живут внутри бытовой техники и чинят её.", 
+                fullStory: "Маленькие человечки-фиксики живут внутри бытовой техники и чинят её. Они дружат с мальчиком ДимДимычем, который знает их секрет. Каждая серия объясняет устройство какого-либо прибора.", 
+                img: "https://www.soulsound.ru/upload/iblock/d24/maxresdefault.jpg", 
+                mainTag: "УчимсяДружить", tags: ["Наука", "Техника"], 
+                behavior: "• Симка — ответственная, умная, всегда готова помочь.\n• Нолик — младший брат, любопытный, иногда шаловливый.\n• Папус и Мася — родители, мудрые и заботливые.\n\nФиксики всегда помогают друг другу и людям.", 
+                themes: "Научное познание, техническая грамотность, дружба.",
+                tagReason: "Согласно Qian Zhang (2021), контент с эмпатией снижает агрессию. Фиксики решают проблемы через сотрудничество.",
+                impact: "Положительное: интерес к науке, взаимовыручка."
+            },
+            { 
+                id: 9, title: "Три кота", age: "3+", cat: "russian", 
+                desc: "Приключения трёх котят: Коржика, Компота и Карамельки.", 
+                fullStory: "Три котёнка — Коржик, Компот и Карамелька — живут с родителями и каждый день попадают в разные ситуации: играют, путешествуют, решают задачи.", 
+                img: "https://avatars.mds.yandex.net/i?id=45e03dd89f69fc29111d72c5fe47875d_l-3986049-images-thumbs&n=13", 
+                mainTag: "УчимсяДружить", tags: ["Творчество", "Семья"], 
+                behavior: "Котята дружные, помогают друг другу, проявляют творческий подход. Родители всегда рядом, поддерживают и объясняют.", 
+                themes: "Творчество, семейные ценности, дружба.",
+                tagReason: "Согласно Qian Zhang (2021), взаимовыручка в контенте снижает агрессию. Котята всегда решают проблемы вместе.",
+                impact: "Положительное: примеры семейных отношений, развитие творчества."
+            },
+            { 
+                id: 10, title: "Свинка Пеппа", age: "3+", cat: "foreign", 
+                desc: "О жизни свинки Пеппы, её братика Джорджа и семьи.", 
+                fullStory: "Пеппа — маленькая свинка, которая живёт с мамой, папой и братиком Джорджем. Она ходит в гости, играет с друзьями, прыгает по лужам.", 
+                img: "https://i.pinimg.com/originals/5d/e2/1b/5de21b4713af0dae94a6b84228bc46a4.jpg", 
+                mainTag: "УчимсяДружить", tags: ["Семья", "Социализация"], 
+                behavior: "Пеппа ведёт себя как обычный ребёнок: капризничает, ошибается, но учится. Семья всегда поддерживает её, родители мягко направляют.", 
+                themes: "Семейные отношения, социализация, повседневная жизнь, юмор.",
+                tagReason: "Согласно Qian Zhang (2021), контент с эмпатией снижает агрессию. Пеппа и её семья демонстрируют тёплые отношения.",
+                impact: "Положительное: простые жизненные ситуации. Отрицательное: дети могут копировать фырканье."
+            },
+            { 
+                id: 11, title: "Щенячий патруль", age: "3+", cat: "foreign", 
+                desc: "Команда спасательных щенков во главе с мальчиком Райдером.", 
+                fullStory: "Мальчик Райдер и команда щенков-спасателей спешат на помощь жителям Бухты Приключений. Каждый щенок имеет свой навык и снаряжение.", 
+                img: "https://i.pinimg.com/originals/45/d1/8c/45d18ce0a476f008d6c0e76179f53ea3.jpg", 
+                mainTag: "Динамично", tags: ["Команда", "Помощь"], 
+                behavior: "Щенки работают в команде, каждый использует свои способности. Они смелые и решительные. Однако темп действий очень быстрый.", 
+                themes: "Командная работа, помощь другим, смелость, ответственность.",
+                tagReason: "Согласно N. Babio (2025), быстрый темп ведёт к гиперактивности. Высокая скорость смены кадров и много визуальных эффектов.",
+                impact: "Положительное: учит взаимопомощи. Отрицательное: быстрый темп перегружает нервную систему."
+            },
+            { 
+                id: 12, title: "Клуб Микки Мауса", age: "3+", cat: "foreign", 
+                desc: "Весёлые приключения Микки Мауса и его друзей.", 
+                fullStory: "Микки Маус, Минни, Дональд, Дейзи, Гуфи и Плуто решают задачи с помощью специальных инструментов — «маустриков». Каждая серия — интерактивное приключение.", 
+                img: "https://avatars.mds.yandex.net/get-kinopoisk-image/6201401/fa6c223c-5e4a-45f0-b8db-41f537416479/1920x", 
+                mainTag: "Динамично", tags: ["Обучение", "Логика"], 
+                behavior: "Все персонажи дружелюбны, готовы к сотрудничеству. Зрителей вовлекают в решение задач через «четвёртую стену».", 
+                themes: "Обучение через игру, логика, дружба, творчество.",
+                tagReason: "Согласно N. Babio (2025), быстрый темп ведёт к гиперактивности. Интерактивный формат держит внимание, но может перегружать.",
+                impact: "Положительное: развивает логику. Отрицательное: быстрый темп."
+            },
+            { 
+                id: 13, title: "Бэмби", age: "3+", cat: "foreign", 
+                desc: "О взрослении оленёнка Бэмби в лесу.", 
+                fullStory: "Оленёнок Бэмби рождается в лесу и взрослеет, познавая радости и опасности жизни. Он переживает потерю матери, находит друзей, влюбляется.", 
+                img: "https://i.pinimg.com/736x/e5/a9/a2/e5a9a292eeecfa66fe9b82b543cb9ce7.jpg", 
+                mainTag: "УчимсяДружить", tags: ["Взросление", "Природа"], 
+                behavior: "Бэмби — любознательный, осторожный, учится на ошибках. Его друзья — Топотун и Цветочек — поддерживают его в трудные моменты.", 
+                themes: "Взросление, стойкость, дружба, природа, семейные узы.",
+                tagReason: "Согласно Qian Zhang (2021), контент с эмпатией снижает агрессию. Дружба и взаимопомощь — ключевые темы.",
+                impact: "Положительное: учит ценить близких. Отрицательное: сцена потери матери может быть травматичной."
+            },
+            { 
+                id: 14, title: "Даша-путешественница", age: "3+", cat: "foreign", 
+                desc: "Девочка Даша вместе с обезьянкой Бутсой путешествует по миру.", 
+                fullStory: "Девочка Даша вместе с обезьянкой Бутсой путешествует по миру, решает загадки и помогает друзьям. Зрителей просят отвечать на вопросы.", 
+                img: "https://i.pinimg.com/originals/10/87/9d/10879d5a2765462b6246719141f7a717.jpg", 
+                mainTag: "Динамично", tags: ["Языки", "Культура"], 
+                behavior: "Даша проявляет любознательность, настойчивость и дружелюбие. Интерактивный формат держит внимание, но темп высокий.", 
+                themes: "Изучение языков, культурное разнообразие, логика, помощь.",
+                tagReason: "Согласно N. Babio (2025), быстрый темп ведёт к гиперактивности. Формат с постоянными вопросами перегружает внимание.",
+                impact: "Положительное: изучение новых слов. Отрицательное: высокий темп."
+            },
+            { 
+                id: 15, title: "Холодное сердце", age: "6+", cat: "foreign", 
+                desc: "Сёстры Эльза и Анна спасают королевство.", 
+                fullStory: "Принцесса Эльза случайно замораживает королевство и убегает в горы. Её сестра Анна отправляется в путешествие, чтобы найти её и спасти страну.", 
+                img: "http://images-s.kinorium.com/movie/poster/646017/w1500_44777991.jpg", 
+                mainTag: "УчимсяДружить", tags: ["Семья", "Любовь"], 
+                behavior: "Эльза живёт в страхе из-за своих способностей, но учится принимать себя. Анна демонстрирует любовь к сестре и смелость. Олаф олицетворяет радость.", 
+                themes: "Семейные связи, принятие себя, сила любви, преодоление страха.",
+                tagReason: "Согласно Qian Zhang (2021), эмпатичный контент снижает агрессию. Любовь сестёр — центральная тема.",
+                impact: "Положительное: учит семейным ценностям. Отрицательное: некоторые сцены могут пугать детей младше 5-6 лет."
+            },
+            { 
+                id: 16, title: "Зверополис", age: "6+", cat: "foreign", 
+                desc: "Мир, где животные живут как люди.", 
+                fullStory: "Крольчиха Джуди Хоппс становится первым кроликом-полицейским в городе Зверополис. Вместе с лисом Ником Уайлдом она расследует загадочное дело.", 
+                img: "https://pic.rutubelist.ru/video/2025-01-08/ff/a8/ffa8e8987adbf185643c7b348c819c45.jpg", 
+                mainTag: "УчимсяДружить", tags: ["Равенство", "Справедливость"], 
+                behavior: "Джуди — целеустремлённая, борется со стереотипами. Ник — саркастичный, но проявляет верность и смекалку. Вместе они преодолевают предрассудки.", 
+                themes: "Равенство, предрассудки, сотрудничество, мечты, справедливость.",
+                tagReason: "Согласно Qian Zhang (2021), контент с эмпатией снижает агрессию. Герои учатся сотрудничать, несмотря на различия.",
+                impact: "Положительное: учит толерантности. Отрицательное: некоторые сцены напряжённые."
+            },
+            { 
+                id: 17, title: "Тайна Коко", age: "6+", cat: "foreign", 
+                desc: "Мальчик Мигель мечтает стать музыкантом.", 
+                fullStory: "Мальчик Мигель мечтает стать музыкантом, но его семья запрещает музыку. В День мёртвых он попадает в мир предков и раскрывает тайну прапрадедушки.", 
+                img: "http://images-s.kinorium.com/movie/poster/661432/w1500_52002011.jpg", 
+                mainTag: "УчимсяДружить", tags: ["Традиции", "Мечты"], 
+                behavior: "Мигель следует за мечтой, но учится ценить семейные традиции. Гектор помогает ему, жертвуя своими интересами.", 
+                themes: "Семейная память, традиции, мечты, связь поколений.",
+                tagReason: "Согласно Qian Zhang (2021), эмпатичный контент снижает агрессию. Мультфильм посвящён любви к семье.",
+                impact: "Положительное: учит ценить семью. Отрицательное: тема смерти может пугать."
+            },
+            { 
+                id: 18, title: "Мулан", age: "6+", cat: "foreign", 
+                desc: "Девушка из Китая идёт на войну вместо отца.", 
+                fullStory: "Китаянка Мулан переодевается в мужчину и идёт в армию вместо больного отца. Она защищает страну и доказывает, что героем может стать каждый.", 
+                img: "https://avatars.mds.yandex.net/get-kinopoisk-image/4303601/2a243316-4868-4fb6-a3c7-a2f5a54d5426/1920x", 
+                mainTag: "УчимсяДружить", tags: ["Мужество", "Семья"], 
+                behavior: "Мулан проявляет исключительное мужество, самоотверженность и смекалку. Она нарушает стереотипы, но делает это ради семьи и долга.", 
+                themes: "Мужество, семейные ценности, самоотверженность, преодоление стереотипов.",
+                tagReason: "Согласно Qian Zhang (2021), контент с эмпатией снижает агрессию. Мулан защищает семью и страну.",
+                impact: "Положительное: учит смелости. Отрицательное: сцены сражений напряжённые."
+            },
+            { 
+                id: 19, title: "Том и Джерри", age: "6+", cat: "foreign", 
+                desc: "Противостояние кота Тома и мыши Джерри.", 
+                fullStory: "Кот Том и мышонок Джерри постоянно враждуют. Том пытается поймать Джерри, а Джерри изобретательно уходит от погони. В редких сериях они объединяются.", 
+                img: "https://avatars.mds.yandex.net/get-mpic/4792566/2a0000018b432bb3a58c247997f5c37c31f5/orig", 
+                mainTag: "Динамично", tags: ["Юмор", "Конкуренция"], 
+                behavior: "Оба используют хитрость, ловушки и агрессивные методы. Конфликты решаются через драки, взрывы, падения.", 
+                themes: "Юмор, находчивость, конкуренция.",
+                tagReason: "Согласно N. Babio (2025), быстрый темп ведёт к гиперактивности. Согласно S. Amudhan (2024), дети копируют агрессивное поведение.",
+                impact: "Положительное: чувство юмора. Отрицательное: высокий уровень агрессии."
+            },
+            { 
+                id: 20, title: "Моана", age: "6+", cat: "foreign", 
+                desc: "Девушка отправляется в путешествие по океану.", 
+                fullStory: "Дочь вождя Моана отправляется в опасное путешествие по океану, чтобы спасти свой остров. Ей помогает полубог Мауи.", 
+                img: "https://images.moneycontrol.com/static-mcnews/2024/10/20241009173845_image-2024-10-09T230816.094.jpg", 
+                mainTag: "УчимсяДружить", tags: ["Смелость", "Традиции"], 
+                behavior: "Моана — смелая, независимая, следует предназначению. Мауи проходит путь от эгоизма к ответственности.", 
+                themes: "Смелость, независимость, культурные традиции, самопознание.",
+                tagReason: "Согласно Qian Zhang (2021), контент с эмпатией снижает агрессию. Моана и Мауи учатся работать вместе.",
+                impact: "Положительное: учит смелости. Отрицательное: сцены с монстрами могут пугать."
+            },
+            { 
+                id: 21, title: "Ну, погоди!", age: "6+", cat: "russian", 
+                desc: "Погоня Волка за Зайцем.", 
+                fullStory: "Волк пытается поймать Зайца в разных местах — на пляже, в парке, на стройке. Заяц всегда уходит от погони благодаря смекалке.", 
+                img: "https://i.pinimg.com/736x/fe/3a/a4/fe3aa47c478c751cdf003c6e568ccfd9.jpg", 
+                mainTag: "Динамично", tags: ["Юмор", "Смекалка"], 
+                behavior: "Волк проявляет агрессию, преследует Зайца. Заяц не дерётся, но убегает и иногда насмехается.", 
+                themes: "Юмор, смекалка, настойчивость, противостояние.",
+                tagReason: "Согласно N. Babio (2025), быстрый темп ведёт к гиперактивности. Согласно S. Amudhan (2024), дети могут копировать агрессию Волка.",
+                impact: "Положительное: чувство юмора. Отрицательное: высокий уровень агрессии."
+            },
+            { 
+                id: 22, title: "Простоквашино", age: "6+", cat: "russian", 
+                desc: "Мальчик дядя Фёдор, кот Матроскин и пёс Шарик.", 
+                fullStory: "Городской мальчик Дядя Фёдор уходит из дома вместе с котом Матроскиным и псом Шариком. Они поселяются в деревне и ведут самостоятельное хозяйство.", 
+                img: "https://pic.uma.media/pic/cardimage/72/37/7237b97e350a4f458b2ffac4facc9283.jpg", 
+                mainTag: "УчимсяДружить", tags: ["Самостоятельность", "Животные"], 
+                behavior: "Матроскин — хозяйственный и предприимчивый. Шарик — простодушный. Дядя Фёдор — ответственный. Они ссорятся по пустякам, но всегда мирятся.", 
+                themes: "Самостоятельность, забота о животных, дружба, семейные ценности.",
+                tagReason: "Согласно Qian Zhang (2021), контент с эмпатией снижает агрессию. Герои всегда приходят друг другу на помощь.",
+                impact: "Положительное: учит ответственности. Отрицательное: некоторые шутки непонятны современным детям."
+            },
+            { 
+                id: 23, title: "Гравити Фолз", age: "12+", cat: "foreign", 
+                desc: "Близнецы расследуют тайны городка.", 
+                fullStory: "Близнецы Диппер и Мэйбл проводят лето у дедушки Стэна в таинственном городке Гравити Фолз. Они сталкиваются с паранормальными явлениями, монстрами и загадками.", 
+                img: "https://avatars.mds.yandex.net/i?id=853954bb48bee12ba37855b49e7c8cbccb195909-5906726-images-thumbs&n=13", 
+                mainTag: "Нереально", tags: ["Мистика", "Тайны"], 
+                behavior: "Диппер — умный и подозрительный. Мэйбл — весёлая и импульсивная. Персонажи обманывают друг друга, совершают рискованные поступки.", 
+                themes: "Мистика, загадки, семейные отношения, взросление, доверие.",
+                tagReason: "Согласно M. Downes (2025), мультфильмы с фантастичностью перегружают мозг. Гравити Фолз построен на нарушениях физики.",
+                impact: "Положительное: логическое мышление. Отрицательное: пугающие образы."
+            },
+            { 
+                id: 24, title: "Аватар: Легенда об Аанге", age: "12+", cat: "foreign", 
+                desc: "Мальчик осваивает четыре стихии и спасает мир.", 
+                fullStory: "В мире, где люди управляют четырьмя стихиями, мальчик Аанг узнаёт, что он — Аватар. Он должен остановить войну и восстановить баланс.", 
+                img: "https://geekcity.ru/wp-content/uploads/2026/03/Avatar.png", 
+                mainTag: "Нереально", tags: ["Ответственность", "Честь"], 
+                behavior: "Аанг несёт бремя лидера, но старается решать проблемы мирно. Катара и Сокка — верные друзья. Зуко проходит путь от врага к союзнику.", 
+                themes: "Ответственность, честь, духовный рост, дружба, борьба добра и зла.",
+                tagReason: "Согласно M. Downes (2025), фантастика перегружает мозг. Мир Аватара построен на магии стихий.",
+                impact: "Положительное: моральное мышление. Отрицательное: сцены сражений."
+            },
+            { 
+                id: 25, title: "Время приключений", age: "12+", cat: "foreign", 
+                desc: "Мальчик Финн и волшебный пёс Джейке в постапокалиптическом мире.", 
+                fullStory: "Мальчик Финн и волшебный пёс Джейк живут в постапокалиптическом мире, путешествуют и помогают принцессам, королям и другим существам.", 
+                img: "https://avatars.mds.yandex.net/i?id=471ed251a28178c35cd2db3e61122e6e_l-5234392-images-thumbs&n=13", 
+                mainTag: "Нереально", tags: ["Воображение", "Философия"], 
+                behavior: "Финн — смелый и справедливый. Джейк — весёлый и изобретательный. Персонажи используют абсурдный юмор и превращения.", 
+                themes: "Воображение, абсурдизм, дружба, философия, героизм.",
+                tagReason: "Согласно M. Downes (2025), фантастические мультфильмы перегружают мозг. Мир мультфильма полностью ирреален.",
+                impact: "Положительное: развивает воображение. Отрицательное: сюрреалистичные образы."
+            },
+            { 
+                id: 26, title: "Черепашки-ниндзя", age: "12+", cat: "foreign", 
+                desc: "Четыре братья-черепашки защищают город.", 
+                fullStory: "Четыре черепашки-мутанта — Леонардо, Донателло, Микеланджело и Рафаэль — борются с преступностью под руководством крысы-учителя Сплинтера.", 
+                img: "https://images.iptv.rt.ru/images/c70afebir4ssllu11flg.jpg", 
+                mainTag: "Динамично", tags: ["Команда", "Героизм"], 
+                behavior: "Леонардо — дисциплинированный лидер. Рафаэль — вспыльчивый. Донателло — изобретатель. Микеланджело — весельчак. Они используют боевые искусства.", 
+                themes: "Командная работа, дисциплина, справедливость, героизм.",
+                tagReason: "Согласно N. Babio (2025), быстрый темп ведёт к гиперактивности. Мультфильм насыщен сценами драк.",
+                impact: "Положительное: командная работа. Отрицательное: высокий уровень насилия."
+            },
+            { 
+                id: 27, title: "Легенда о Корре", age: "12+", cat: "foreign", 
+                desc: "Девушка Корра становится новым Аватаром.", 
+                fullStory: "Корра — новый Аватар после Аанга. Она живёт в мире, где магия соседствует с технологиями. Корра борется с революционерами и духами.", 
+                img: "http://images-s.kinorium.com/movie/poster/541137/w1500_51761901.jpg", 
+                mainTag: "Нереально", tags: ["Рост", "Мораль"], 
+                behavior: "Корра — сильная, решительная, но вспыльчивая. Учится мудрости и терпению. Сталкивается с этическими дилеммами.", 
+                themes: "Личностный рост, мораль, политика, баланс, самоопределение.",
+                tagReason: "Согласно M. Downes (2025), фантастика перегружает мозг. Мир наполнен магией и духами.",
+                impact: "Положительное: серьёзные темы. Отрицательное: сцены насилия, политика."
+            },
+            { 
+                id: 28, title: "Симпсоны", age: "12+", cat: "foreign", 
+                desc: "Жизнь американской семьи Симпсонов.", 
+                fullStory: "Жизнь американской семьи Симпсонов: Гомер, Мардж, Барт, Лиза и Мэгги. Сериал высмеивает общество, политику и культуру.", 
+                img: "https://i.pinimg.com/736x/85/c6/8f/85c68f912373f29296c0c34bb0e859fb.jpg", 
+                mainTag: "Копирование", tags: ["Сатира", "Юмор"], 
+                behavior: "Гомер — ленивый и эгоистичный. Барт — непослушный. Лиза — умная. Мардж — терпеливая. Персонажи используют сарказм, спорят.", 
+                themes: "Сатира, семейные отношения, социальные проблемы, юмор для взрослых.",
+                tagReason: "Согласно S. Amudhan (2024), дети склонны перенимать поведение. Барт и Гомер подают примеры грубости.",
+                impact: "Положительное: критическое мышление. Отрицательное: копирование негативных моделей."
+            },
+            { 
+                id: 29, title: "Шрек", age: "12+", cat: "foreign", 
+                desc: "Огр Шрек спасает принцессу.", 
+                fullStory: "Огр Шрек обнаруживает, что его болото заполонили сказочные существа. Он отправляется спасать принцессу Фиону в сопровождении болтливого Осла.", 
+                img: "http://images-s.kinorium.com/movie/poster/112655/w1500_3588129.jpg", 
+                mainTag: "Копирование", tags: ["Принятие", "Толерантность"], 
+                behavior: "Шрек — грубый, но добрый внутри. Фиона — сильная и независимая. Осёл — надоедливый, но преданный. Шрек использует запугивание.", 
+                themes: "Принятие себя, внешность против сущности, пародия, дружба, толерантность.",
+                tagReason: "Согласно S. Amudhan (2024), дети склонны перенимать поведение. Шрек часто использует грубость.",
+                impact: "Положительное: учит принятию себя. Отрицательное: грубый юмор."
+            },
+            { 
+                id: 30, title: "Малышарики", age: "0+", cat: "russian", 
+                desc: "Приключения маленьких круглых зверят для самых маленьких.", 
+                fullStory: "О приключениях маленьких круглых зверят для самых маленьких. Простые истории о повседневных ситуациях.", 
+                img: "https://images.beetv.kz/rosing-beelinekz-production/fce2a134fec5d8ae21c9_600x337c.jpg", 
+                mainTag: "УчимсяДружить", tags: ["Развитие", "Семья"], 
+                behavior: "Герои постоянно учатся чему-то новому: изучают цвета, цифры, учатся договариваться и мириться. Персонажи всегда вежливы.", 
+                themes: "Первые знания, семья, вежливость.",
+                tagReason: "Согласно Qian Zhang (2021), контент с эмпатией снижает агрессию. Персонажи всегда вежливы.",
+                impact: "Положительное: развивает речь и эмоциональный интеллект."
+            }
+        ];
+
+        let saved = JSON.parse(localStorage.getItem('saved') || '[]');
+        let ratings = JSON.parse(localStorage.getItem('ratings') || '{}');
+        let comments = JSON.parse(localStorage.getItem('comments') || '{}');
+        let currentFilterAge = 'all';
+        let currentFilterCat = 'all';
+        let currentId = null;
+
+        function render() {
+            const grid = document.getElementById('cartoonsGrid');
+            const data = cartoons.filter(c => 
+                (currentFilterAge === 'all' || c.age.replace('+','') === currentFilterAge) &&
+                (currentFilterCat === 'all' || c.cat === currentFilterCat)
+            );
+            
+            if (data.length === 0) {
+                grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:1.2rem;">Мультфильмы не найдены</p>';
+            } else {
+                grid.innerHTML = data.map(c => createCard(c)).join('');
+            }
+            
+            const sGrid = document.getElementById('savedGrid');
+            const sData = cartoons.filter(c => saved.includes(c.id));
+            sGrid.innerHTML = sData.length ? sData.map(c => createCard(c, true)).join('') : '<p style="grid-column:1/-1;text-align:center;color:#94a3b8">Нет сохранённых</p>';
+        }
+
+        function createCard(c, isSavedView = false) {
+            const r = ratings[c.id] || 0;
+            const isS = saved.includes(c.id);
+            const mainT = c.mainTag ? `<span class="tag tag-main tag-${c.mainTag}" onclick="openTag('${c.mainTag}')">#${c.mainTag} ℹ️</span>` : '';
+            const otherT = c.tags.map(t => `<span class="tag tag-other">${t}</span>`).join('');
+            
+            return `
+            <div class="card">
+                <div class="card-img-container">
+                    <img src="${c.img}" class="card-img" onerror="this.src='https://via.placeholder.com/400x250?text=${c.title}'">
+                    <span class="age-badge age-${c.age.replace('+','')}">${c.age}</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-title">${c.title}</div>
+                    <div class="card-desc">${c.desc}</div>
+                    <div class="tags-container">${mainT}${otherT}</div>
+                    <div class="rating-row">
+                        <span class="heart-icon">❤</span> ${r > 0 ? r : '-'}
+                    </div>
+                    <div class="card-actions">
+                        <button class="save-btn ${isS?'active':''}" onclick="toggleSave(${c.id})">
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </button>
+                        <button class="details-btn" onclick="openModal(${c.id})">Подробнее</button>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function filterAge(a) {
+            currentFilterAge = a;
+            updateBtns('.filters button', a);
+            render();
+        }
+        function filterCategory(c) {
+            currentFilterCat = c;
+            updateBtns('#catalog .filters button', c);
+            render();
+        }
+        function updateBtns(sel, val) {
+            document.querySelectorAll(sel).forEach(b => {
+                if(b.textContent.toLowerCase().includes(val === 'all' ? 'все' : (val+'+'))) {
+                    b.classList.add('active');
+                } else if ((val==='russian' && b.textContent.includes('Российские')) || (val==='foreign' && b.textContent.includes('Зарубежные'))) {
+                    b.classList.add('active');
+                } else {
+                    b.classList.remove('active');
+                }
+            });
+            event.target.classList.add('active');
+        }
+
+        function searchCartoons() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const grid = document.getElementById('cartoonsGrid');
+            const data = cartoons.filter(c => c.title.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q));
+            grid.innerHTML = data.length ? data.map(c => createCard(c)).join('') : '<p style="grid-column:1/-1;text-align:center">Ничего не найдено</p>';
+        }
+
+        function toggleSave(id) {
+            if(saved.includes(id)) saved = saved.filter(i => i !== id);
+            else saved.push(id);
+            localStorage.setItem('saved', JSON.stringify(saved));
+            render();
+        }
+
+        function openModal(id) {
+            currentId = id;
+            const c = cartoons.find(x => x.id === id);
+            document.getElementById('mModalTitle').textContent = c.title;
+            document.getElementById('mModalImg').src = c.img;
+            // Здесь теперь используется полный текст fullStory
+            document.getElementById('mModalDesc').textContent = c.fullStory;
+            document.getElementById('mModalBehavior').textContent = c.behavior;
+            document.getElementById('mModalThemes').textContent = c.themes;
+            document.getElementById('mModalTagReason').textContent = c.tagReason;
+            document.getElementById('mModalImpact').textContent = c.impact;
+            
+            let tHtml = c.mainTag ? `<span class="tag tag-main tag-${c.mainTag}" onclick="openTag('${c.mainTag}')">#${c.mainTag} ℹ️</span>` : '';
+            tHtml += c.tags.map(t => `<span class="tag tag-other">${t}</span>`).join('');
+            document.getElementById('mModalTags').innerHTML = tHtml;
+
+            const r = ratings[id] || 0;
+            let hHtml = '';
+            for(let i=1; i<=5; i++) {
+                hHtml += `<span style="color:${i<=r?'#ef4444':'#64748b'}" onclick="setRate(${i})">❤</span>`;
+            }
+            document.getElementById('mModalRating').innerHTML = hHtml;
+
+            renderComments();
+            document.getElementById('cartoonModal').classList.add('active');
+        }
+
+        function closeModal() { document.getElementById('cartoonModal').classList.remove('active'); }
+
+        function setRate(n) {
+            ratings[currentId] = n;
+            localStorage.setItem('ratings', JSON.stringify(ratings));
+            openModal(currentId);
+            render();
+        }
+
+        function renderComments() {
+            const list = comments[currentId] || [];
+            const div = document.getElementById('mModalComments');
+            if(list.length === 0) div.innerHTML = '<p style="color:#64748b;font-size:0.9rem">Нет комментариев</p>';
+            else div.innerHTML = list.map(c => `<div style="background:#0f172a;padding:10px;border-radius:8px;margin-bottom:8px;"><b style="color:#818cf8">${c.author}</b> <span style="font-size:0.8rem;color:#64748b">${c.date}</span><p style="margin:5px 0 0;font-size:0.9rem">${c.text}</p></div>`).join('');
+        }
+
+        function addComment() {
+            const txt = document.getElementById('mModalCommentInput').value.trim();
+            if(!txt) return alert('Введите текст');
+            if(!comments[currentId]) comments[currentId] = [];
+            comments[currentId].push({author:'Гость', text:txt, date:new Date().toLocaleDateString()});
+            localStorage.setItem('comments', JSON.stringify(comments));
+            document.getElementById('mModalCommentInput').value = '';
+            renderComments();
+        }
+
+        function openTag(name) {
+            const info = tagInfo[name];
+            if(!info) return;
+            document.getElementById('tModalTitle').textContent = info.title;
+            document.getElementById('tModalTitle').style.color = info.color;
+            document.getElementById('tagModalContent').style.borderColor = info.color;
+            document.getElementById('tModalBody').innerHTML = `
+                <div style="margin-bottom:20px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px;">
+                    <div style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 5px;">👨‍ Исследование:</div>
+                    <div style="font-weight: bold; color: #f1f5f9; font-size: 1.1rem;">${info.researcher}</div>
+                    <div style="font-style: italic; color: #cbd5e1; font-size: 0.9rem; margin-top: 5px;">"${info.study}"</div>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <div style="font-weight: bold; color: #34d399; margin-bottom: 8px; display:flex; align-items:center; gap:8px;">📊 Выявлено:</div>
+                    <div style="color: #e2e8f0; line-height: 1.6;">${info.finding}</div>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <div style="font-weight: bold; color: #f87171; margin-bottom: 8px; display:flex; align-items:center; gap:8px;">⚠️ Влияние на ребёнка:</div>
+                    <div style="color: #e2e8f0; line-height: 1.6;">${info.impact}</div>
+                </div>
+                <div style="background: rgba(79, 70, 229, 0.2); padding: 15px; border-radius: 8px; border-left: 4px solid ${info.color};">
+                    <div style="font-weight: bold; color: ${info.color}; margin-bottom: 8px; display:flex; align-items:center; gap:8px;">💡 Рекомендация:</div>
+                    <div style="color: #e2e8f0; line-height: 1.6;">${info.recommendation}</div>
+                </div>
+            `;
+            document.getElementById('tagModal').classList.add('active');
+        }
+        function closeTagModal() { document.getElementById('tagModal').classList.remove('active'); }
+
+        render();
+    </script>
+</body>
+</html>

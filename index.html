@@ -4,189 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>МультРейтинг - Осознанный выбор мультфильмов</title>
-    <meta name="description" content="Система авторских тегов для выбора мультфильмов">
     <meta name="author" content="Калмыкова Екатерина Дмитриевна, 10 класс, МОУ ИРМО СОШ п. Молодежный">
-    
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
     <style>
-        /* ВСЕ СТИЛИ ВНУТРИ - РАБОТАЕТ БЕЗ ИНТЕРНЕТА/VPN */
         * { font-family: 'Roboto', sans-serif; box-sizing: border-box; }
-        body { 
-            background-color: #0f172a; 
-            color: #e2e8f0; 
-            margin: 0; 
-            line-height: 1.6; 
-        }
-        
-        /* Навигация */
-        nav { 
-            background-color: #1e293b; 
-            padding: 1rem 2rem; 
-            position: sticky; 
-            top: 0; 
-            z-index: 50; 
-            border-bottom: 1px solid #334155; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); 
-        }
-        .logo { 
-            font-size: 1.5rem; 
-            font-weight: bold; 
-            color: #818cf8; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-        }
+        body { background-color: #0f172a; color: #e2e8f0; margin: 0; line-height: 1.6; }
+        nav { background-color: #1e293b; padding: 1rem 2rem; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #818cf8; display: flex; align-items: center; gap: 10px; }
         .nav-links { display: flex; gap: 20px; }
-        .nav-links a { 
-            color: #cbd5e1; 
-            text-decoration: none; 
-            font-weight: 500; 
-            transition: color 0.3s; 
-        }
+        .nav-links a { color: #cbd5e1; text-decoration: none; font-weight: 500; transition: color 0.3s; }
         .nav-links a:hover { color: #818cf8; }
-        
-        /* Герой-секция с звёздами */
-        .hero { 
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%);
-            padding: 100px 20px 60px; 
-            text-align: center; 
-            position: relative; 
-            overflow: hidden; 
-        }
-        .hero::before {
-            content: ''; 
-            position: absolute; 
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)), 
-                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 90px 40px, rgba(255,255,255,0.6), rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.8), rgba(0,0,0,0));
-            background-repeat: repeat; 
-            background-size: 200px 200px; 
-            opacity: 0.3;
-            animation: twinkle 5s ease-in-out infinite;
-        }
-        @keyframes twinkle { 
-            0%, 100% { opacity: 0.3; } 
-            50% { opacity: 0.5; } 
-        }
-        
-        .hero h1 { 
-            font-size: 2.2rem; 
-            margin-bottom: 1rem; 
-            color: white; 
-            position: relative; 
-            z-index: 1; 
-            line-height: 1.3;
-        }
-        .hero p { 
-            font-size: 1.25rem; 
-            color: #c7d2fe; 
-            margin-bottom: 2rem; 
-            position: relative; 
-            z-index: 1; 
-        }
-        
-        .search-box { 
-            max-width: 600px; 
-            margin: 0 auto; 
-            position: relative; 
-            z-index: 1; 
-        }
-        .search-input { 
-            width: 100%; 
-            padding: 15px 50px 15px 25px; 
-            border-radius: 50px; 
-            border: none; 
-            background: white; 
-            color: #1e293b; 
-            font-size: 1rem; 
-            outline: none; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-        }
-        .search-btn { 
-            position: absolute; 
-            right: 5px; 
-            top: 5px; 
-            background: #4f46e5; 
-            color: white; 
-            border: none; 
-            padding: 10px 25px; 
-            border-radius: 50px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            transition: background 0.2s; 
-        }
-        .search-btn:hover { background: #4338ca; }
-        
+        .hero { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%); padding: 100px 20px 60px; text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), rgba(0,0,0,0)), radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 90px 40px, rgba(255,255,255,0.6), rgba(0,0,0,0)), radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.8), rgba(0,0,0,0)); background-repeat: repeat; background-size: 200px 200px; opacity: 0.3; animation: twinkle 5s ease-in-out infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.5; } }
+        .hero h1 { font-size: 2.2rem; margin-bottom: 1rem; color: white; position: relative; z-index: 1; line-height: 1.3; }
+        .hero p { font-size: 1.25rem; color: #c7d2fe; margin-bottom: 2rem; position: relative; z-index: 1; }
+        .search-box { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
+        .search-input { width: 100%; padding: 15px 50px 15px 25px; border-radius: 50px; border: none; background: white; color: #1e293b; font-size: 1rem; outline: none; }
+        .search-btn { position: absolute; right: 5px; top: 5px; background: #4f46e5; color: white; border: none; padding: 10px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; }
         section { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
         h2 { text-align: center; font-size: 2rem; margin-bottom: 40px; color: #f1f5f9; }
-        
         .filters { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
-        .filter-btn { 
-            padding: 10px 20px; 
-            border-radius: 50px; 
-            border: none; 
-            cursor: pointer; 
-            background: #334155; 
-            color: #cbd5e1; 
-            font-weight: 500; 
-            transition: all 0.2s; 
-        }
-        .filter-btn.active { 
-            background: #4f46e5; 
-            color: white; 
-            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3); 
-        }
-        
+        .filter-btn { padding: 10px 20px; border-radius: 50px; border: none; cursor: pointer; background: #334155; color: #cbd5e1; font-weight: 500; transition: all 0.2s; }
+        .filter-btn.active { background: #4f46e5; color: white; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        
-        /* Карточки */
-        .card { 
-            background: #1e293b; 
-            border-radius: 1rem; 
-            overflow: hidden; 
-            border: 1px solid #334155; 
-            transition: transform 0.3s, box-shadow 0.3s; 
-            display: flex; 
-            flex-direction: column; 
-        }
-        .card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2); 
-        }
+        .card { background: #1e293b; border-radius: 1rem; overflow: hidden; border: 1px solid #334155; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2); }
         .card-img-container { position: relative; height: 200px; }
         .card-img { width: 100%; height: 100%; object-fit: cover; }
-        
-        /* Цветные бейджи возраста */
-        .age-badge { 
-            position: absolute; 
-            top: 10px; 
-            right: 10px; 
-            padding: 5px 12px; 
-            border-radius: 20px; 
-            font-size: 0.75rem; 
-            font-weight: bold; 
-            color: white; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
+        .age-badge { position: absolute; top: 10px; right: 10px; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; color: white; }
         .age-0 { background: #10b981; }
         .age-3 { background: #3b82f6; }
         .age-6 { background: #f59e0b; }
         .age-12 { background: #ef4444; }
-        
         .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
         .card-title { font-size: 1.25rem; font-weight: bold; margin-bottom: 10px; color: #f1f5f9; }
         .card-desc { color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        
-        /* Теги */
         .tags-container { margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 5px; }
         .tag { padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
         .tag:hover { transform: scale(1.05); }
@@ -196,15 +49,12 @@
         .tag-УчимсяДружить { background: #10b981; color: white; }
         .tag-Копирование { background: #ef4444; color: white; }
         .tag-other { background: #475569; color: #e2e8f0; }
-        
         .rating-row { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; color: #f1f5f9; font-weight: bold; }
         .heart-icon { color: #ef4444; }
         .card-actions { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #334155; padding-top: 15px; }
-        .save-btn { background: none; border: none; cursor: pointer; color: #64748b; transition: color 0.2s; }
+        .save-btn { background: none; border: none; cursor: pointer; color: #64748b; transition: color 0.2s; font-size: 1.5rem; }
         .save-btn.active { color: #fbbf24; }
-        .details-btn { background: #4f46e5; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: background 0.2s; }
-        .details-btn:hover { background: #4338ca; }
-        
+        .details-btn { background: #4f46e5; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 500; }
         .about-grid { display: grid; grid-cols: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
         .feature-card { background: #1e293b; padding: 20px; border-radius: 12px; text-align: center; border: 1px solid #334155; }
         .feature-icon { font-size: 2.5rem; margin-bottom: 10px; }
@@ -216,41 +66,23 @@
         .text-amber { color: #fbbf24; }
         .text-emerald { color: #34d399; }
         .text-red { color: #f87171; }
-        
         footer { background: #020617; padding: 30px 20px; text-align: center; color: #94a3b8; margin-top: 60px; border-top: 1px solid #1e293b; }
-        .site-link { color: #818cf8; text-decoration: none; font-weight: 500; }
-        .site-link:hover { text-decoration: underline; }
-        
-        /* Модальное окно */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
         .modal.active { display: flex; }
         .modal-content { background: #1e293b; border-radius: 1rem; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; border: 1px solid #334155; position: relative; }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; color: #94a3b8; cursor: pointer; line-height: 1; z-index: 10; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; color: #94a3b8; cursor: pointer; z-index: 10; }
         .modal-body { padding: 30px; }
         .modal-img { width: 100%; height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px; }
-        
         .section-title { font-size: 1.2rem; font-weight: bold; margin: 25px 0 10px; color: #f1f5f9; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #334155; padding-bottom: 5px; }
         .section-text { color: #cbd5e1; font-size: 0.95rem; white-space: pre-line; text-align: justify; }
         .highlight-box { background: #312e81; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px solid #4f46e5; }
-        
         .comment-box { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; margin-bottom: 10px; resize: vertical; }
         .submit-btn { background: #4f46e5; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        
-        /* Модальное окно тега */
-        .tag-modal-content {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: 2px solid;
-            max-width: 600px;
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero h1 { font-size: 1.8rem; }
-        }
+        .tag-modal-content { background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid; max-width: 600px; }
+        @media (max-width: 768px) { .nav-links { display: none; } .hero h1 { font-size: 1.8rem; } }
     </style>
 </head>
 <body>
-
     <nav>
         <div class="logo">🌙 МультРейтинг</div>
         <div class="nav-links">
@@ -260,7 +92,6 @@
             <a href="#about">О проекте</a>
         </div>
     </nav>
-
     <section id="home" class="hero">
         <h1>Система авторских тегов как инструмент для осознанного выбора мультфильмов родителями</h1>
         <p>На основе анализа влияния мультфильмов на детскую психику</p>
@@ -268,11 +99,7 @@
             <input type="text" id="searchInput" class="search-input" placeholder="Введите название мультфильма..." onkeypress="if(event.key==='Enter') searchCartoons()">
             <button onclick="searchCartoons()" class="search-btn">Найти</button>
         </div>
-        <div style="margin-top: 40px; position: relative; z-index: 1;">
-            <img src="https://static1.parovoz.tv/assets/lantern/frames/frame_16.jpg" alt="Мультфильмы" style="max-width: 100%; width: 800px; border-radius: 20px; border: 4px solid rgba(99, 102, 241, 0.3); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);">
-        </div>
     </section>
-
     <section style="padding-top: 0; padding-bottom: 20px;">
         <div class="filters">
             <button class="filter-btn active" onclick="filterAge('all')">Все</button>
@@ -281,7 +108,6 @@
             <button class="filter-btn" onclick="filterAge('6')">6+ лет</button>
             <button class="filter-btn" onclick="filterAge('12')">12+ лет</button>
         </div>
-        
         <div class="filters">
             <button class="filter-btn active" onclick="filterTag('all')">Все теги</button>
             <button class="filter-btn" onclick="filterTag('Нереально')" style="background: #8b5cf6; color: white;">#Нереально</button>
@@ -290,17 +116,14 @@
             <button class="filter-btn" onclick="filterTag('Копирование')" style="background: #ef4444; color: white;">#Копирование</button>
         </div>
     </section>
-
     <section id="catalog">
         <h2>Каталог мультфильмов</h2>
         <div id="cartoonsGrid" class="grid"></div>
     </section>
-
     <section id="saved" style="background: #1e293b; border-top: 1px solid #334155; border-bottom: 1px solid #334155;">
         <h2>Сохранённые мультфильмы</h2>
         <div id="savedGrid" class="grid"></div>
     </section>
-
     <section id="about">
         <h2>О проекте</h2>
         <div class="about-grid">
@@ -311,65 +134,50 @@
         <div class="science-block">
             <h3 style="margin-top:0; color:white;">📚 Научная база проекта</h3>
             <div class="science-grid">
-                <div class="science-item"><div class="science-title text-purple">#Нереально</div><p style="font-size:0.9rem; color:#cbd5e1;"><b>M. Downes (2025):</b> мультфильмы с высоким уровнем фантастичности перегружают мозг ребенка, нарушая концентрацию внимания.</p></div>
-                <div class="science-item"><div class="science-title text-amber">#Динамично</div><p style="font-size:0.9rem; color:#cbd5e1;"><b>N. Babio (2025):</b> высокая скорость смены кадров ведёт к гиперактивности и вспышкам гнева у детей.</p></div>
-                <div class="science-item"><div class="science-title text-emerald">#УчимсяДружить</div><p style="font-size:0.9rem; color:#cbd5e1;"><b>Qian Zhang (2021):</b> контент с эмпатией и взаимовыручкой снижает уровень агрессии у детей.</p></div>
-                <div class="science-item"><div class="science-title text-red">#Копирование</div><p style="font-size:0.9rem; color:#cbd5e1;"><b>S. Amudhan (2024):</b> дети склонны перенимать личность и поведение любимого героя.</p></div>
+                <div class="science-item"><div class="science-title text-purple">#Нереально</div><p style="font-size:0.9rem; color:#cbd5e1;"><b>M. Downes (2025):</b> мультфильмы с высоким уровнем фантастичности перегружают мозг ребенка.</p></div>
+                <div class="science-item"><div class="science-title text-amber">#Динамично</div><p style="font-size:0.9rem; color:#cbd5e1;"><b>N. Babio (2025):</b> высокая скорость смены кадров ведёт к гиперактивности.</p></div>
+                <div class="science-item"><div class="science-title text-emerald">#УчимсяДружить</div><p style="font-size:0.9rem; color:#cbd5e1;"><b>Qian Zhang (2021):</b> контент с эмпатией снижает агрессию у детей.</p></div>
+                <div class="science-item"><div class="science-title text-red">#Копирование</div><p style="font-size:0.9rem; color:#cbd5e1;"><b>S. Amudhan (2024):</b> дети склонны перенимать поведение героя.</p></div>
             </div>
         </div>
     </section>
-
     <footer>
-        <p style="font-size: 1.2rem; font-weight: bold; color: #f1f5f9;">&copy; 2026 МультРейтинг. Все права защищены.</p>
-        <p>Учебный проект</p>
+        <p style="font-size: 1.2rem; font-weight: bold; color: #f1f5f9;">&copy; 2026 МультРейтинг</p>
         <p>10 класс, МОУ ИРМО «СОШ п. Молодежный»</p>
         <p style="font-size: 0.9rem; margin-top: 10px;">Руководитель: Габец Дарья Дмитриевна</p>
-        <p style="margin-top: 15px;">
-            <a href="https://mult-rating-nu.vercel.app" class="site-link" target="_blank">🌐 mult-rating-nu.vercel.app</a>
-        </p>
+        <p style="margin-top: 15px;"><a href="https://mult-rating-nu.vercel.app" style="color: #818cf8;">🌐 mult-rating-nu.vercel.app</a></p>
     </footer>
-
-    <!-- Модальное окно мультфильма -->
     <div id="cartoonModal" class="modal" onclick="if(event.target===this) closeModal()">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">&times;</span>
             <div class="modal-body">
                 <img id="mModalImg" src="" alt="" class="modal-img">
-                <h2 id="mModalTitle" style="text-align:left; margin-bottom:15px; color: #f1f5f9;"></h2>
+                <h2 id="mModalTitle" style="text-align:left; margin-bottom:15px;"></h2>
                 <div id="mModalTags" class="tags-container" style="margin-bottom:25px;"></div>
-                
                 <div class="section-title">📖 Краткий сюжет</div>
                 <p id="mModalDesc" class="section-text"></p>
-                
                 <div class="section-title">🎭 Поведение героев</div>
                 <p id="mModalBehavior" class="section-text"></p>
-                
                 <div class="section-title">🏷️ Темы</div>
                 <p id="mModalThemes" class="section-text"></p>
-
                 <div class="highlight-box">
-                    <div class="section-title" style="margin-top:0; color:#a78bfa; border-color: #a78bfa;">🔬 Почему присвоен этот тег?</div>
+                    <div class="section-title" style="margin-top:0; color:#a78bfa;">🔬 Почему этот тег?</div>
                     <p id="mModalTagReason" class="section-text"></p>
-                    
-                    <div class="section-title" style="color:#f87171; border-color: #f87171;">⚠️ Влияние на ребёнка</div>
+                    <div class="section-title" style="color:#f87171;">⚠️ Влияние на ребёнка</div>
                     <p id="mModalImpact" class="section-text"></p>
                 </div>
-
                 <div style="margin-top:35px; padding-top:25px; border-top: 1px solid #334155;">
-                    <div class="section-title">❤️ Оцените мультфильм</div>
+                    <div class="section-title">❤️ Оценка</div>
                     <div id="mModalRating" style="font-size:2.5rem; cursor:pointer; color:#cbd5e0; margin-bottom: 20px;"></div>
-                    
-                    <div class="section-title">💬 Комментарии родителей</div>
-                    <div id="mModalComments" style="max-height:250px; overflow-y:auto; margin-bottom:15px;"></div>
-                    <textarea id="mModalCommentInput" class="comment-box" rows="3" placeholder="Напишите ваш отзыв..."></textarea>
-                    <button onclick="addComment()" class="submit-btn">Отправить комментарий</button>
+                    <div class="section-title">💬 Комментарии</div>
+                    <div id="mModalComments" style="max-height:200px; overflow-y:auto; margin-bottom:15px;"></div>
+                    <textarea id="mModalCommentInput" class="comment-box" rows="3" placeholder="Ваш отзыв..."></textarea>
+                    <button onclick="addComment()" class="submit-btn">Отправить</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Модальное окно тега -->
-    <div id="tagModal" class="modal" onclick="if(event.target===this) closeTagModal()" style="background:rgba(15, 23, 42, 0.95);">
+    <div id="tagModal" class="modal" onclick="if(event.target===this) closeTagModal()">
         <div class="modal-content tag-modal-content" id="tagModalContent">
             <span class="close-modal" onclick="closeTagModal()">&times;</span>
             <div class="modal-body">
@@ -378,57 +186,52 @@
             </div>
         </div>
     </div>
-
     <script>
         const MAIN_TAGS = ['Нереально', 'Динамично', 'УчимсяДружить', 'Копирование'];
-        
         const tagInfo = {
-            'Нереально': { title: '#Нереально', color: '#8b5cf6', researcher: 'M. Downes et al. (2025)', study: 'Toddlers Viewing Fantastical Cartoons', finding: 'Мультфильмы с высоким уровнем «фантастичности» перегружают мозг ребенка.', impact: 'Возможная рассеянность, снижение концентрации.', recommendation: 'Ограничивать время просмотра и обсуждать вымысел.' },
-            'Динамично': { title: '#Динамично', color: '#f59e0b', researcher: 'N. Babio et al. (2025)', study: 'Sleep duration and screen time', finding: 'Высокая скорость смены кадров ведёт к гиперактивности.', impact: 'Перевозбуждение, трудности с засыпанием.', recommendation: 'Не смотреть перед сном.' },
-            'УчимсяДружить': { title: '#УчимсяДружить', color: '#10b981', researcher: 'Qian Zhang et al. (2021)', study: 'Positive Effects of Prosocial Cartoon Viewing', finding: 'Контент с эмпатией снижает агрессию у детей.', impact: 'Снижение агрессии, развитие эмпатии.', recommendation: 'Идеальны для развития личности.' },
-            'Копирование': { title: '#Копирование', color: '#ef4444', researcher: 'S. Amudhan et al. (2024)', study: 'The cartoon character syndrome', finding: 'Дети склонны перенимать личность любимого героя.', impact: 'Копирование нежелательного поведения.', recommendation: 'Обсуждать поступки героев после просмотра.' }
+            'Нереально': { title: '#Нереально', color: '#8b5cf6', researcher: 'M. Downes (2025)', study: 'Toddlers Viewing Fantastical Cartoons', finding: 'Мультфильмы с фантастичностью перегружают мозг.', impact: 'Рассеянность, снижение концентрации.', recommendation: 'Ограничивать время просмотра.' },
+            'Динамично': { title: '#Динамично', color: '#f59e0b', researcher: 'N. Babio (2025)', study: 'Sleep duration and screen time', finding: 'Быстрая смена кадров ведёт к гиперактивности.', impact: 'Перевозбуждение, трудности с засыпанием.', recommendation: 'Не смотреть перед сном.' },
+            'УчимсяДружить': { title: '#УчимсяДружить', color: '#10b981', researcher: 'Qian Zhang (2021)', study: 'Prosocial Cartoon Viewing', finding: 'Контент с эмпатией снижает агрессию.', impact: 'Развитие эмпатии, снижение агрессии.', recommendation: 'Идеальны для развития.' },
+            'Копирование': { title: '#Копирование', color: '#ef4444', researcher: 'S. Amudhan (2024)', study: 'Cartoon character syndrome', finding: 'Дети копируют поведение героя.', impact: 'Копирование поведения (хорошего или плохого).', recommendation: 'Обсуждать поступки героев.' }
         };
-
         const cartoons = [
-            { id: 1, title: "Смешарики", age: "0+", cat: "russian", desc: "О приключениях круглых зверушек в Ромашковой долине.", fullStory: "В Ромашковой долине живут девять круглых зверушек-смешариков. Каждая серия — отдельная история о дружбе, спорах, поиске смысла.", img: "https://zastavki.gas-kvas.com/uploads/posts/2024-09/zastavki-gas-kvas-com-j74g-p-zastavki-multseriala-smeshariki-1.jpg", mainTags: ["УчимсяДружить"], tags: ["Психология", "Дружба"], behavior: "Герои помогают друг другу, решают конфликты через диалог.", themes: "Дружба, взаимопомощь, принятие себя.", tagReason: "Согласно Qian Zhang (2021), контент с взаимовыручкой снижает агрессию.", impact: "Положительное: учит эмпатии." },
-            { id: 2, title: "Лунтик", age: "0+", cat: "russian", desc: "Инопланетянин Лунтик учится жить среди насекомых.", fullStory: "Лунтик падает на Землю и находит друзей среди насекомых.", img: "https://i.pinimg.com/736x/12/78/c2/1278c28276fb927e1709bdbeb11d9670.jpg", mainTags: ["УчимсяДружить"], tags: ["Доброта"], behavior: "Лунтик — воплощение доброты.", themes: "Доброта, дружба.", tagReason: "Контент с эмпатией снижает агрессию.", impact: "Спокойный темп, добрые персонажи." },
-            { id: 3, title: "Малышарики", age: "0+", cat: "russian", desc: "Приключения маленьких круглых зверят.", fullStory: "Простые истории о повседневных ситуациях для малышей.", img: "https://images.beetv.kz/rosing-beelinekz-production/fce2a134fec5d8ae21c9_600x337c.jpg", mainTags: ["УчимсяДружить"], tags: ["Развитие"], behavior: "Герои учатся договариваться.", themes: "Первые знания, семья.", tagReason: "Персонажи всегда вежливы.", impact: "Развивает речь и эмоциональный интеллект." },
-            { id: 4, title: "Маша и Медведь", age: "3+", cat: "russian", desc: "Гиперактивная Маша нарушает покой Медведя.", fullStory: "Маша постоянно устраивает шалости в лесу.", img: "https://i-igrushki.ru/upload/medialibrary/f55/f55fe35cd1d49a2191968884848dd2ff.jpg", mainTags: ["Динамично", "Копирование"], tags: [], behavior: "Маша импульсивна, не знает слова «нельзя».", themes: "Озорство.", tagReason: "Быстрый темп и копирование поведения.", impact: "Копирование капризов, перегрузка нервной системы." },
-            { id: 5, title: "Барбоскины", age: "0+", cat: "russian", desc: "Большая семья собак с разными характерами.", fullStory: "Пятеро детей учатся понимать друг друга.", img: "https://i.pinimg.com/videos/thumbnails/originals/2b/01/f2/2b01f20133d16e31de27b72ef63295a1.0000000.jpg", mainTags: ["УчимсяДружить"], tags: ["Семья"], behavior: "Братья и сёстры учатся договариваться.", themes: "Семейные отношения.", tagReason: "Герои помогают друг другу.", impact: "Примеры семейных отношений." },
-            { id: 6, title: "Винни-Пух", age: "0+", cat: "russian", desc: "Приключения медвежонка и друзей.", fullStory: "Винни-Пух и его друзья в Волшебном лесу.", img: "https://avatars.mds.yandex.net/i?id=95e94f42722da5d39e36efd7bd48e3f42bb45299-5141058-images-thumbs&n=13", mainTags: ["УчимсяДружить"], tags: ["Дружба"], behavior: "Друзья всегда помогают друг другу.", themes: "Дружба, юмор.", tagReason: "Бескорыстная забота.", impact: "Спокойный темп, добрый юмор." },
-            { id: 7, title: "Чебурашка", age: "0+", cat: "russian", desc: "Дружба Чебурашки и Крокодила Гены.", fullStory: "Чебурашка и Гена строят дом для друзей.", img: "https://i01.fotocdn.net/s132/34ff69815ff319ce/public_pin_l/2964611630.jpg", mainTags: ["УчимсяДружить"], tags: ["Доброта"], behavior: "Бескорыстная дружба.", themes: "Настоящая дружба.", tagReason: "Пример бескорыстной дружбы.", impact: "Понятное противопоставление добра и зла." },
-            { id: 8, title: "Ёжик в тумане", age: "0+", cat: "russian", desc: "Философская притча о ёжике.", fullStory: "Ёжик попадает в туман по дороге к другу.", img: "https://avatars.mds.yandex.net/get-vh/5332272/2a00000195cdebc0232e57b6434ed670c988/1920x1080q15", mainTags: [], tags: ["Философия"], behavior: "Любознательность и тревога.", themes: "Философия, природа.", tagReason: "Философская притча.", impact: "Развивает воображение." },
-            { id: 9, title: "Фиксики", age: "3+", cat: "russian", desc: "Человечки живут внутри техники.", fullStory: "Фиксики чинят технику и дружат с ДимДимычем.", img: "https://www.soulsound.ru/upload/iblock/d24/maxresdefault.jpg", mainTags: ["УчимсяДружить"], tags: ["Наука"], behavior: "Помогают друг другу и людям.", themes: "Наука, техника.", tagReason: "Решают проблемы через сотрудничество.", impact: "Интерес к науке." },
+            { id: 1, title: "Смешарики", age: "0+", cat: "russian", desc: "О приключениях круглых зверушек.", fullStory: "В Ромашковой долине живут девять круглых зверушек. Каждая серия — история о дружбе и решении конфликтов.", img: "https://zastavki.gas-kvas.com/uploads/posts/2024-09/zastavki-gas-kvas-com-j74g-p-zastavki-multseriala-smeshariki-1.jpg", mainTags: ["УчимсяДружить"], tags: ["Психология", "Дружба"], behavior: "Герои помогают друг другу, решают конфликты через диалог. Агрессия отсутствует.", themes: "Дружба, взаимопомощь, принятие себя.", tagReason: "Согласно Qian Zhang (2021), контент с взаимовыручкой снижает агрессию.", impact: "Положительное: учит эмпатии." },
+            { id: 2, title: "Лунтик", age: "0+", cat: "russian", desc: "Инопланетянин учится жить на Земле.", fullStory: "Лунтик падает на Землю и находит друзей среди насекомых.", img: "https://i.pinimg.com/736x/12/78/c2/1278c28276fb927e1709bdbeb11d9670.jpg", mainTags: ["УчимсяДружить"], tags: ["Доброта"], behavior: "Лунтик — воплощение доброты. Всегда извиняется и помогает.", themes: "Доброта, дружба.", tagReason: "Контент с эмпатией снижает агрессию.", impact: "Спокойный темп, добрые персонажи." },
+            { id: 3, title: "Малышарики", age: "0+", cat: "russian", desc: "Приключения маленьких зверят.", fullStory: "Простые истории о повседневных ситуациях для малышей.", img: "https://images.beetv.kz/rosing-beelinekz-production/fce2a134fec5d8ae21c9_600x337c.jpg", mainTags: ["УчимсяДружить"], tags: ["Развитие"], behavior: "Герои учатся договариваться и мириться.", themes: "Первые знания, семья.", tagReason: "Персонажи всегда вежливы.", impact: "Развивает речь и эмоциональный интеллект." },
+            { id: 4, title: "Маша и Медведь", age: "3+", cat: "russian", desc: "Гиперактивная Маша нарушает покой Медведя.", fullStory: "Маша постоянно устраивает шалости в лесу.", img: "https://i-igrushki.ru/upload/medialibrary/f55/f55fe35cd1d49a2191968884848dd2ff.jpg", mainTags: ["Динамично", "Копирование"], tags: [], behavior: "Маша импульсивна, не знает слова «нельзя».", themes: "Озорство.", tagReason: "Быстрый темп и копирование поведения.", impact: "Копирование капризов." },
+            { id: 5, title: "Барбоскины", age: "0+", cat: "russian", desc: "Большая семья собак.", fullStory: "Пятеро детей учатся понимать друг друга.", img: "https://i.pinimg.com/videos/thumbnails/originals/2b/01/f2/2b01f20133d16e31de27b72ef63295a1.0000000.jpg", mainTags: ["УчимсяДружить"], tags: ["Семья"], behavior: "Братья и сёстры учатся договариваться.", themes: "Семейные отношения.", tagReason: "Герои помогают друг другу.", impact: "Примеры семейных отношений." },
+            { id: 6, title: "Винни-Пух", age: "0+", cat: "russian", desc: "Приключения медвежонка и друзей.", fullStory: "Винни-Пух и друзья в Волшебном лесу.", img: "https://avatars.mds.yandex.net/i?id=95e94f42722da5d39e36efd7bd48e3f42bb45299-5141058-images-thumbs&n=13", mainTags: ["УчимсяДружить"], tags: ["Дружба"], behavior: "Друзья всегда помогают друг другу.", themes: "Дружба, юмор.", tagReason: "Бескорыстная забота.", impact: "Спокойный темп." },
+            { id: 7, title: "Чебурашка", age: "0+", cat: "russian", desc: "Дружба Чебурашки и Гены.", fullStory: "Чебурашка и Гена строят дом для друзей.", img: "https://i01.fotocdn.net/s132/34ff69815ff319ce/public_pin_l/2964611630.jpg", mainTags: ["УчимсяДружить"], tags: ["Доброта"], behavior: "Бескорыстная дружба.", themes: "Настоящая дружба.", tagReason: "Пример бескорыстной дружбы.", impact: "Понятное добро и зло." },
+            { id: 8, title: "Ёжик в тумане", age: "0+", cat: "russian", desc: "Философская притча.", fullStory: "Ёжик попадает в туман по дороге к другу.", img: "https://avatars.mds.yandex.net/get-vh/5332272/2a00000195cdebc0232e57b6434ed670c988/1920x1080q15", mainTags: [], tags: ["Философия"], behavior: "Любознательность и тревога.", themes: "Философия, природа.", tagReason: "Философская притча.", impact: "Развивает воображение." },
+            { id: 9, title: "Фиксики", age: "3+", cat: "russian", desc: "Человечки внутри техники.", fullStory: "Фиксики чинят технику и дружат с ДимДимычем.", img: "https://avatars.mds.yandex.net/i?id=6b5e5f5e7f5b5c5e5f5b5c5e5f5b5c5e-12345678-images-thumbs", mainTags: ["УчимсяДружить"], tags: ["Наука"], behavior: "Помогают друг другу и людям.", themes: "Наука, техника.", tagReason: "Решают проблемы через сотрудничество.", impact: "Интерес к науке." },
             { id: 10, title: "Три кота", age: "3+", cat: "russian", desc: "Приключения трёх котят.", fullStory: "Котята решают повседневные задачи.", img: "https://avatars.mds.yandex.net/i?id=45e03dd89f69fc29111d72c5fe47875d_l-3986049-images-thumbs&n=13", mainTags: ["УчимсяДружить"], tags: ["Творчество"], behavior: "Котята помогают друг другу.", themes: "Творчество, семья.", tagReason: "Решают проблемы вместе.", impact: "Развитие творчества." },
-            { id: 11, title: "Свинка Пеппа", age: "3+", cat: "foreign", desc: "Жизнь свинки Пеппы и семьи.", fullStory: "Пеппа ходит в гости и играет с друзьями.", img: "https://i.pinimg.com/originals/5d/e2/1b/5de21b4713af0dae94a6b84228bc46a4.jpg", mainTags: ["УчимсяДружить"], tags: ["Семья"], behavior: "Семья поддерживает Пеппу.", themes: "Семейные отношения.", tagReason: "Тёплые отношения в семье.", impact: "Простые жизненные ситуации." },
-            { id: 12, title: "Щенячий патруль", age: "3+", cat: "foreign", desc: "Команда щенков-спасателей.", fullStory: "Щенки спасают жителей Бухты Приключений.", img: "https://i.pinimg.com/originals/45/d1/8c/45d18ce0a476f008d6c0e76179f53ea3.jpg", mainTags: ["Динамично"], tags: ["Команда"], behavior: "Работают в команде, быстрый темп.", themes: "Командная работа.", tagReason: "Быстрый темп действий.", impact: "Перегружает нервную систему." },
-            { id: 13, title: "Клуб Микки Мауса", age: "3+", cat: "foreign", desc: "Приключения Микки и друзей.", fullStory: "Микки и друзья решают задачи.", img: "https://avatars.mds.yandex.net/get-kinopoisk-image/6201401/fa6c223c-5e4a-45f0-b8db-41f537416479/1920x", mainTags: ["Динамично"], tags: ["Обучение"], behavior: "Интерактивный формат.", themes: "Обучение через игру.", tagReason: "Быстрый темп.", impact: "Развивает логику." },
-            { id: 14, title: "Бэмби", age: "3+", cat: "foreign", desc: "Взросление оленёнка Бэмби.", fullStory: "Бэмби взрослеет в лесу.", img: "https://i.pinimg.com/736x/e5/a9/a2/e5a9a292eeecfa66fe9b82b543cb9ce7.jpg", mainTags: ["УчимсяДружить"], tags: ["Природа"], behavior: "Друзья поддерживают Бэмби.", themes: "Взросление, дружба.", tagReason: "Дружба и взаимопомощь.", impact: "Учит ценить близких." },
-            { id: 15, title: "Даша-путешественница", age: "3+", cat: "foreign", desc: "Даша путешествует по миру.", fullStory: "Даша решает загадки и помогает друзьям.", img: "https://i.pinimg.com/originals/10/87/9d/10879d5a2765462b6246719141f7a717.jpg", mainTags: ["Динамично"], tags: ["Языки"], behavior: "Интерактивный формат, высокий темп.", themes: "Изучение языков.", tagReason: "Высокий темп.", impact: "Изучение новых слов." },
-            { id: 16, title: "Холодное сердце", age: "6+", cat: "foreign", desc: "Эльза и Анна спасают королевство.", fullStory: "Анна ищет Эльзу, чтобы спасти страну.", img: "http://images-s.kinorium.com/movie/poster/646017/w1500_44777991.jpg", mainTags: ["УчимсяДружить"], tags: ["Семья"], behavior: "Любовь сестёр.", themes: "Семейные связи.", tagReason: "Любовь сестёр — центральная тема.", impact: "Учит семейным ценностям." },
-            { id: 17, title: "Зверополис", age: "6+", cat: "foreign", desc: "Мир, где животные живут как люди.", fullStory: "Джуди и Ник расследуют дело.", img: "https://pic.rutubelist.ru/video/2025-01-08/ff/a8/ffa8e8987adbf185643c7b348c819c45.jpg", mainTags: ["УчимсяДружить"], tags: ["Равенство"], behavior: "Преодолевают предрассудки.", themes: "Равенство, сотрудничество.", tagReason: "Учатся сотрудничать.", impact: "Учит толерантности." },
-            { id: 18, title: "Тайна Коко", age: "6+", cat: "foreign", desc: "Мигель мечтает стать музыкантом.", fullStory: "Мигель попадает в мир предков.", img: "http://images-s.kinorium.com/movie/poster/661432/w1500_52002011.jpg", mainTags: ["УчимсяДружить"], tags: ["Традиции"], behavior: "Учится ценить традиции.", themes: "Семейная память.", tagReason: "Любовь к семье.", impact: "Учит ценить семью." },
-            { id: 19, title: "Мулан", age: "6+", cat: "foreign", desc: "Мулан идёт в армию вместо отца.", fullStory: "Мулан защищает страну.", img: "https://avatars.mds.yandex.net/get-kinopoisk-image/4303601/2a243316-4868-4fb6-a3c7-a2f5a54d5426/1920x", mainTags: ["УчимсяДружить", "Динамично"], tags: ["Мужество"], behavior: "Проявляет мужество.", themes: "Мужество, семья.", tagReason: "Защищает семью, но сцены сражений быстрые.", impact: "Учит смелости." },
-            { id: 20, title: "Том и Джерри", age: "6+", cat: "foreign", desc: "Вражда кота и мыши.", fullStory: "Том пытается поймать Джерри.", img: "https://avatars.mds.yandex.net/get-mpic/4792566/2a0000018b432bb3a58c247997f5c37c31f5/orig", mainTags: ["Динамично", "Копирование"], tags: ["Юмор"], behavior: "Агрессивные методы.", themes: "Юмор, конкуренция.", tagReason: "Быстрый темп и агрессия.", impact: "Копирование драк." },
-            { id: 21, title: "Моана", age: "6+", cat: "foreign", desc: "Моана путешествует по океану.", fullStory: "Моана спасает свой остров.", img: "https://images.moneycontrol.com/static-mcnews/2024/10/20241009173845_image-2024-10-09T230816.094.jpg", mainTags: ["УчимсяДружить"], tags: ["Смелость"], behavior: "Смелая и независимая.", themes: "Смелость, традиции.", tagReason: "Работают вместе.", impact: "Учит смелости." },
-            { id: 22, title: "Ну, погоди!", age: "6+", cat: "russian", desc: "Погоня Волка за Зайцем.", fullStory: "Волк пытается поймать Зайца.", img: "https://i.pinimg.com/736x/fe/3a/a4/fe3aa47c478c751cdf003c6e568ccfd9.jpg", mainTags: ["Динамично", "Копирование"], tags: ["Юмор"], behavior: "Волк проявляет агрессию.", themes: "Юмор, смекалка.", tagReason: "Быстрый темп и агрессия.", impact: "Копирование агрессии." },
-            { id: 23, title: "Простоквашино", age: "6+", cat: "russian", desc: "Дядя Фёдор, кот и пёс.", fullStory: "Ведут самостоятельное хозяйство.", img: "https://pic.uma.media/pic/cardimage/72/37/7237b97e350a4f458b2ffac4facc9283.jpg", mainTags: ["УчимсяДружить"], tags: ["Самостоятельность"], behavior: "Всегда мирятся.", themes: "Самостоятельность.", tagReason: "Приходят на помощь.", impact: "Учит ответственности." },
-            { id: 24, title: "Гравити Фолз", age: "12+", cat: "foreign", desc: "Близнецы расследуют тайны.", fullStory: "Диппер и Мэйбл сталкиваются с мистикой.", img: "https://avatars.mds.yandex.net/i?id=853954bb48bee12ba37855b49e7c8cbccb195909-5906726-images-thumbs&n=13", mainTags: ["Нереально", "Копирование"], tags: ["Мистика"], behavior: "Рискуют и обманывают.", themes: "Мистика, тайны.", tagReason: "Нарушения физики и рискованное поведение.", impact: "Пугающие образы." },
-            { id: 25, title: "Аватар: Легенда об Аанге", age: "12+", cat: "foreign", desc: "Аанг осваивает стихии.", fullStory: "Аанг должен остановить войну.", img: "https://geekcity.ru/wp-content/uploads/2026/03/Avatar.png", mainTags: ["Нереально", "УчимсяДружить"], tags: ["Ответственность"], behavior: "Решает проблемы мирно.", themes: "Ответственность, дружба.", tagReason: "Магия стихий, но сотрудничество.", impact: "Моральное мышление." },
-            { id: 26, title: "Время приключений", age: "12+", cat: "foreign", desc: "Финн и Джейк в постапокалиптическом мире.", fullStory: "Путешествуют и помогают другим.", img: "https://avatars.mds.yandex.net/i?id=471ed251a28178c35cd2db3e61122e6e_l-5234392-images-thumbs&n=13", mainTags: ["Нереально"], tags: ["Воображение"], behavior: "Абсурдный юмор.", themes: "Воображение, философия.", tagReason: "Полностью ирреальный мир.", impact: "Развивает воображение." },
-            { id: 27, title: "Черепашки-ниндзя", age: "12+", cat: "foreign", desc: "Четыре черепашки защищают город.", fullStory: "Борются с преступностью.", img: "https://images.iptv.rt.ru/images/c70afebir4ssllu11flg.jpg", mainTags: ["Динамично", "Копирование"], tags: ["Команда"], behavior: "Используют боевые искусства.", themes: "Командная работа.", tagReason: "Сцены драк.", impact: "Копирование боевых приёмов." },
-            { id: 28, title: "Легенда о Корре", age: "12+", cat: "foreign", desc: "Корра становится Аватаром.", fullStory: "Корра борется с революционерами.", img: "http://images-s.kinorium.com/movie/poster/541137/w1500_51761901.jpg", mainTags: ["Нереально", "УчимсяДружить"], tags: ["Рост"], behavior: "Учится мудрости.", themes: "Личностный рост.", tagReason: "Магия, но работа в команде.", impact: "Серьёзные темы." },
-            { id: 29, title: "Симпсоны", age: "12+", cat: "foreign", desc: "Жизнь семьи Симпсонов.", fullStory: "Высмеивают общество.", img: "https://i.pinimg.com/736x/85/c6/8f/85c68f912373f29296c0c34bb0e859fb.jpg", mainTags: ["Копирование"], tags: ["Сатира"], behavior: "Сарказм и споры.", themes: "Сатира.", tagReason: "Копирование грубости.", impact: "Копирование негативных моделей." },
-            { id: 30, title: "Шрек", age: "12+", cat: "foreign", desc: "Огр Шрек спасает принцессу.", fullStory: "Шрек отправляется спасать Фиону.", img: "http://images-s.kinorium.com/movie/poster/112655/w1500_3588129.jpg", mainTags: ["Копирование"], tags: ["Принятие"], behavior: "Использует запугивание.", themes: "Принятие себя.", tagReason: "Грубость персонажа.", impact: "Грубый юмор." }
+            { id: 11, title: "Пеппа Пиг", age: "3+", cat: "foreign", desc: "Жизнь свинки Пеппы.", fullStory: "Пеппа ходит в гости и играет с друзьями.", img: "https://i.pinimg.com/originals/5d/e2/1b/5de21b4713af0dae94a6b84228bc46a4.jpg", mainTags: ["УчимсяДружить"], tags: ["Семья"], behavior: "Семья поддерживает Пеппу.", themes: "Семейные отношения.", tagReason: "Тёплые отношения.", impact: "Простые ситуации." },
+            { id: 12, title: "Щенячий патруль", age: "3+", cat: "foreign", desc: "Команда щенков-спасателей.", fullStory: "Щенки спасают жителей.", img: "https://i.pinimg.com/originals/45/d1/8c/45d18ce0a476f008d6c0e76179f53ea3.jpg", mainTags: ["Динамично"], tags: ["Команда"], behavior: "Работают в команде, быстрый темп.", themes: "Командная работа.", tagReason: "Быстрый темп.", impact: "Перегружает нервную систему." },
+            { id: 13, title: "Микки Маус", age: "3+", cat: "foreign", desc: "Приключения Микки.", fullStory: "Микки и друзья решают задачи.", img: "https://avatars.mds.yandex.net/get-kinopoisk-image/6201401/fa6c223c-5e4a-45f0-b8db-41f537416479/1920x", mainTags: ["Динамично"], tags: ["Обучение"], behavior: "Интерактивный формат.", themes: "Обучение через игру.", tagReason: "Быстрый темп.", impact: "Развивает логику." },
+            { id: 14, title: "Бэмби", age: "3+", cat: "foreign", desc: "Взросление оленёнка.", fullStory: "Бэмби взрослеет в лесу.", img: "https://i.pinimg.com/736x/e5/a9/a2/e5a9a292eeecfa66fe9b82b543cb9ce7.jpg", mainTags: ["УчимсяДружить"], tags: ["Природа"], behavior: "Друзья поддерживают Бэмби.", themes: "Взросление, дружба.", tagReason: "Дружба и взаимопомощь.", impact: "Учит ценить близких." },
+            { id: 15, title: "Даша-путешественница", age: "3+", cat: "foreign", desc: "Даша путешествует.", fullStory: "Даша решает загадки.", img: "https://i.pinimg.com/originals/10/87/9d/10879d5a2765462b6246719141f7a717.jpg", mainTags: ["Динамично"], tags: ["Языки"], behavior: "Интерактивный формат.", themes: "Изучение языков.", tagReason: "Высокий темп.", impact: "Изучение слов." },
+            { id: 16, title: "Холодное сердце", age: "6+", cat: "foreign", desc: "Эльза и Анна спасают королевство.", fullStory: "Анна ищет Эльзу.", img: "http://images-s.kinorium.com/movie/poster/646017/w1500_44777991.jpg", mainTags: ["УчимсяДружить"], tags: ["Семья"], behavior: "Любовь сестёр.", themes: "Семейные связи.", tagReason: "Любовь сестёр.", impact: "Семейные ценности." },
+            { id: 17, title: "Зверополис", age: "6+", cat: "foreign", desc: "Мир животных.", fullStory: "Джуди и Ник расследуют дело.", img: "https://pic.rutubelist.ru/video/2025-01-08/ff/a8/ffa8e8987adbf185643c7b348c819c45.jpg", mainTags: ["УчимсяДружить"], tags: ["Равенство"], behavior: "Преодолевают предрассудки.", themes: "Равенство.", tagReason: "Учатся сотрудничать.", impact: "Толерантность." },
+            { id: 18, title: "Тайна Коко", age: "6+", cat: "foreign", desc: "Мигель мечтает о музыке.", fullStory: "Мигель попадает в мир предков.", img: "http://images-s.kinorium.com/movie/poster/661432/w1500_52002011.jpg", mainTags: ["УчимсяДружить"], tags: ["Традиции"], behavior: "Учится ценить традиции.", themes: "Семейная память.", tagReason: "Любовь к семье.", impact: "Ценить семью." },
+            { id: 19, title: "Мулан", age: "6+", cat: "foreign", desc: "Мулан идёт в армию.", fullStory: "Мулан защищает страну.", img: "https://avatars.mds.yandex.net/get-kinopoisk-image/4303601/2a243316-4868-4fb6-a3c7-a2f5a54d5426/1920x", mainTags: ["УчимсяДружить", "Динамично"], tags: ["Мужество"], behavior: "Проявляет мужество.", themes: "Мужество, семья.", tagReason: "Защищает семью.", impact: "Учит смелости." },
+            { id: 20, title: "Том и Джерри", age: "6+", cat: "foreign", desc: "Вражда кота и мыши.", fullStory: "Том пытается поймать Джерри.", img: "https://avatars.mds.yandex.net/get-mpic/4792566/2a0000018b432bb3a58c247997f5c37c31f5/orig", mainTags: ["Динамично", "Копирование"], tags: ["Юмор"], behavior: "Агрессивные методы.", themes: "Юмор.", tagReason: "Быстрый темп и агрессия.", impact: "Копирование драк." },
+            { id: 21, title: "Моана", age: "6+", cat: "foreign", desc: "Моана путешествует.", fullStory: "Моана спасает остров.", img: "https://images.moneycontrol.com/static-mcnews/2024/10/20241009173845_image-2024-10-09T230816.094.jpg", mainTags: ["УчимсяДружить"], tags: ["Смелость"], behavior: "Смелая.", themes: "Смелость.", tagReason: "Работают вместе.", impact: "Учит смелости." },
+            { id: 22, title: "Ну, погоди!", age: "6+", cat: "russian", desc: "Погоня Волка.", fullStory: "Волк пытается поймать Зайца.", img: "https://i.pinimg.com/736x/fe/3a/a4/fe3aa47c478c751cdf003c6e568ccfd9.jpg", mainTags: ["Динамично", "Копирование"], tags: ["Юмор"], behavior: "Волк проявляет агрессию.", themes: "Юмор.", tagReason: "Быстрый темп.", impact: "Копирование агрессии." },
+            { id: 23, title: "Простоквашино", age: "6+", cat: "russian", desc: "Дядя Фёдор, кот и пёс.", fullStory: "Ведут хозяйство.", img: "https://pic.uma.media/pic/cardimage/72/37/7237b97e350a4f458b2ffac4facc9283.jpg", mainTags: ["УчимсяДружить"], tags: ["Самостоятельность"], behavior: "Всегда мирятся.", themes: "Самостоятельность.", tagReason: "Приходят на помощь.", impact: "Ответственность." },
+            { id: 24, title: "Гравити Фолз", age: "12+", cat: "foreign", desc: "Близнецы расследуют тайны.", fullStory: "Диппер и Мэйбл сталкиваются с мистикой.", img: "https://avatars.mds.yandex.net/i?id=853954bb48bee12ba37855b49e7c8cbccb195909-5906726-images-thumbs&n=13", mainTags: ["Нереально", "Копирование"], tags: ["Мистика"], behavior: "Рискуют.", themes: "Мистика.", tagReason: "Нарушения физики.", impact: "Пугающие образы." },
+            { id: 25, title: "Аватар", age: "12+", cat: "foreign", desc: "Аанг осваивает стихии.", fullStory: "Аанг должен остановить войну.", img: "https://geekcity.ru/wp-content/uploads/2026/03/Avatar.png", mainTags: ["Нереально", "УчимсяДружить"], tags: ["Ответственность"], behavior: "Решает мирно.", themes: "Ответственность.", tagReason: "Магия, но сотрудничество.", impact: "Моральное мышление." },
+            { id: 26, title: "Время приключений", age: "12+", cat: "foreign", desc: "Финн и Джейк.", fullStory: "Путешествуют.", img: "https://avatars.mds.yandex.net/i?id=471ed251a28178c35cd2db3e61122e6e_l-5234392-images-thumbs&n=13", mainTags: ["Нереально"], tags: ["Воображение"], behavior: "Абсурдный юмор.", themes: "Воображение.", tagReason: "Ирреальный мир.", impact: "Развивает воображение." },
+            { id: 27, title: "Черепашки-ниндзя", age: "12+", cat: "foreign", desc: "Четыре черепашки.", fullStory: "Борются с преступностью.", img: "https://images.iptv.rt.ru/images/c70afebir4ssllu11flg.jpg", mainTags: ["Динамично", "Копирование"], tags: ["Команда"], behavior: "Боевые искусства.", themes: "Команда.", tagReason: "Сцены драк.", impact: "Копирование приёмов." },
+            { id: 28, title: "Легенда о Корре", age: "12+", cat: "foreign", desc: "Корра — Аватар.", fullStory: "Корра борется.", img: "http://images-s.kinorium.com/movie/poster/541137/w1500_51761901.jpg", mainTags: ["Нереально", "УчимсяДружить"], tags: ["Рост"], behavior: "Учится мудрости.", themes: "Рост.", tagReason: "Магия, команда.", impact: "Серьёзные темы." },
+            { id: 29, title: "Симпсоны", age: "12+", cat: "foreign", desc: "Семья Симпсонов.", fullStory: "Высмеивают общество.", img: "https://i.pinimg.com/736x/85/c6/8f/85c68f912373f29296c0c34bb0e859fb.jpg", mainTags: ["Копирование"], tags: ["Сатира"], behavior: "Сарказм.", themes: "Сатира.", tagReason: "Копирование грубости.", impact: "Негативные модели." },
+            { id: 30, title: "Шрек", age: "12+", cat: "foreign", desc: "Огр Шрек.", fullStory: "Шрек спасает Фиону.", img: "http://images-s.kinorium.com/movie/poster/112655/w1500_3588129.jpg", mainTags: ["Копирование"], tags: ["Принятие"], behavior: "Использует запугивание.", themes: "Принятие.", tagReason: "Грубость.", impact: "Грубый юмор." }
         ];
-
         let saved = JSON.parse(localStorage.getItem('saved') || '[]');
         let ratings = JSON.parse(localStorage.getItem('ratings') || '{}');
         let comments = JSON.parse(localStorage.getItem('comments') || '{}');
         let currentFilterAge = 'all';
         let currentFilterTag = 'all';
         let currentId = null;
-
         function render() {
             const grid = document.getElementById('cartoonsGrid');
             const data = cartoons.filter(c => {
@@ -436,105 +239,31 @@
                 const tagMatch = currentFilterTag === 'all' || c.mainTags.includes(currentFilterTag) || c.tags.includes(currentFilterTag);
                 return ageMatch && tagMatch;
             });
-            
-            if (data.length === 0) {
-                grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:white;font-size:1.3rem;">Мультфильмы не найдены</p>';
-            } else {
-                grid.innerHTML = data.map(c => createCard(c)).join('');
-            }
-            
+            if (data.length === 0) { grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:white;font-size:1.3rem;">Мультфильмы не найдены</p>'; return; }
+            grid.innerHTML = data.map(c => createCard(c)).join('');
             const sGrid = document.getElementById('savedGrid');
             const sData = cartoons.filter(c => saved.includes(c.id));
             sGrid.innerHTML = sData.length ? sData.map(c => createCard(c, true)).join('') : '<p style="grid-column:1/-1;text-align:center;color:white">Нет сохранённых</p>';
         }
-
         function createCard(c, isSavedView = false) {
             const r = ratings[c.id] || 0;
             const isS = saved.includes(c.id);
-            
             const allMainTags = [...(c.mainTags || [])];
-            (c.tags || []).forEach(t => {
-                if (MAIN_TAGS.includes(t) && !allMainTags.includes(t)) {
-                    allMainTags.push(t);
-                }
-            });
-            
+            (c.tags || []).forEach(t => { if (MAIN_TAGS.includes(t) && !allMainTags.includes(t)) allMainTags.push(t); });
             const mainT = allMainTags.map(t => `<span class="tag tag-main tag-${t}" onclick="openTag('${t}')">#${t} ℹ️</span>`).join('');
             const otherT = (c.tags || []).filter(t => !MAIN_TAGS.includes(t)).map(t => `<span class="tag tag-other">${t}</span>`).join('');
-            
-            return `
-            <div class="card">
-                <div class="card-img-container">
-                    <img src="${c.img}" class="card-img" onerror="this.src='https://via.placeholder.com/400x250?text=${c.title}'">
-                    <span class="age-badge age-${c.age.replace('+','')}">${c.age}</span>
-                </div>
-                <div class="card-body">
-                    <div class="card-title">${c.title}</div>
-                    <div class="card-desc">${c.desc}</div>
-                    <div class="tags-container">${mainT}${otherT}</div>
-                    <div class="rating-row">
-                        <span class="heart-icon">❤</span>
-                        <span class="rating-text">${r > 0 ? r + ' из 5' : 'Нет оценок'}</span>
-                    </div>
-                    <div class="card-actions">
-                        <button class="save-btn ${isS?'active':''}" onclick="toggleSave(${c.id})">
-                            ${isS ? '❤' : '🤍'}
-                        </button>
-                        <button class="details-btn" onclick="openModal(${c.id})">Подробнее</button>
-                    </div>
-                </div>
-            </div>`;
+            return `<div class="card"><div class="card-img-container"><img src="${c.img}" class="card-img" onerror="this.src='https://via.placeholder.com/400x250/1e293b/64748b?text=${encodeURIComponent(c.title)}'"><span class="age-badge age-${c.age.replace('+','')}">${c.age}</span></div><div class="card-body"><div class="card-title">${c.title}</div><div class="card-desc">${c.desc}</div><div class="tags-container">${mainT}${otherT}</div><div class="rating-row"><span class="heart-icon">❤</span><span>${r > 0 ? r : ''}</span></div><div class="card-actions"><button class="save-btn ${isS?'active':''}" onclick="toggleSave(${c.id})">${isS ? '❤' : '🤍'}</button><button class="details-btn" onclick="openModal(${c.id})">Подробнее</button></div></div></div>`;
         }
-
-        function filterAge(a) {
-            currentFilterAge = a;
-            updateBtns('.filters button', a, 'age');
-            render();
-        }
-        
-        function filterTag(t) {
-            currentFilterTag = t;
-            updateBtns('.filters button', t, 'tag');
-            render();
-        }
-        
+        function filterAge(a) { currentFilterAge = a; updateBtns('.filters button', a, 'age'); render(); }
+        function filterTag(t) { currentFilterTag = t; updateBtns('.filters button', t, 'tag'); render(); }
         function updateBtns(sel, val, type) {
-            const buttons = document.querySelectorAll(sel);
-            buttons.forEach(b => {
-                if (type === 'age') {
-                    if (val === 'all' && b.textContent.includes('Все')) {
-                        b.classList.add('active');
-                    } else if (b.textContent.includes(val + '+')) {
-                        b.classList.add('active');
-                    } else {
-                        b.classList.remove('active');
-                    }
-                } else if (type === 'tag') {
-                    if (val === 'all' && b.textContent.includes('Все теги')) {
-                        b.classList.add('active');
-                    } else if (b.textContent.includes('#' + val)) {
-                        b.classList.add('active');
-                    } else {
-                        b.classList.remove('active');
-                    }
-                }
+            document.querySelectorAll(sel).forEach(b => {
+                if (type === 'age') { if ((val === 'all' && b.textContent.includes('Все')) || b.textContent.includes(val + '+')) b.classList.add('active'); else b.classList.remove('active'); }
+                else if (type === 'tag') { if ((val === 'all' && b.textContent.includes('Все теги')) || b.textContent.includes('#' + val)) b.classList.add('active'); else b.classList.remove('active'); }
             });
         }
-
-        function searchCartoons() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            const grid = document.getElementById('cartoonsGrid');
-            const data = cartoons.filter(c => c.title.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q));
-            grid.innerHTML = data.length ? data.map(c => createCard(c)).join('') : '<p style="grid-column:1/-1;text-align:center;color:white">Ничего не найдено</p>';
-        }
-
-        function toggleSave(id) {
-            if(saved.includes(id)) saved = saved.filter(i => i !== id);
-            else saved.push(id);
-            localStorage.setItem('saved', JSON.stringify(saved));
-            render();
-        }
-
+        function searchCartoons() { const q = document.getElementById('searchInput').value.toLowerCase(); const grid = document.getElementById('cartoonsGrid'); const data = cartoons.filter(c => c.title.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q)); grid.innerHTML = data.length ? data.map(c => createCard(c)).join('') : '<p style="grid-column:1/-1;text-align:center;color:white">Ничего не найдено</p>'; }
+        function toggleSave(id) { if(saved.includes(id)) saved = saved.filter(i => i !== id); else saved.push(id); localStorage.setItem('saved', JSON.stringify(saved)); render(); }
         function openModal(id) {
             currentId = id;
             const c = cartoons.find(x => x.id === id);
@@ -545,44 +274,26 @@
             document.getElementById('mModalThemes').textContent = c.themes;
             document.getElementById('mModalTagReason').textContent = c.tagReason;
             document.getElementById('mModalImpact').textContent = c.impact;
-            
             const allMainTags = [...(c.mainTags || [])];
-            (c.tags || []).forEach(t => {
-                if (MAIN_TAGS.includes(t) && !allMainTags.includes(t)) {
-                    allMainTags.push(t);
-                }
-            });
+            (c.tags || []).forEach(t => { if (MAIN_TAGS.includes(t) && !allMainTags.includes(t)) allMainTags.push(t); });
             let tHtml = allMainTags.map(t => `<span class="tag tag-main tag-${t}" onclick="openTag('${t}')">#${t} ℹ️</span>`).join('');
             tHtml += (c.tags || []).filter(t => !MAIN_TAGS.includes(t)).map(t => `<span class="tag tag-other">${t}</span>`).join('');
             document.getElementById('mModalTags').innerHTML = tHtml;
-
             const r = ratings[id] || 0;
             let hHtml = '';
-            for(let i=1; i<=5; i++) {
-                hHtml += `<span style="color:${i<=r?'#ef4444':'#cbd5e0'};margin:0 5px;cursor:pointer;font-size:2.5rem" onclick="setRate(${i})">${i<=r?'❤':'🤍'}</span>`;
-            }
+            for(let i=1; i<=5; i++) { hHtml += `<span style="color:${i<=r?'#ef4444':'#cbd5e0'};margin:0 5px;cursor:pointer;font-size:2.5rem" onclick="setRate(${i})">${i<=r?'❤':'🤍'}</span>`; }
             document.getElementById('mModalRating').innerHTML = hHtml;
-
             renderComments();
             document.getElementById('cartoonModal').classList.add('active');
         }
-
         function closeModal() { document.getElementById('cartoonModal').classList.remove('active'); }
-
-        function setRate(n) {
-            ratings[currentId] = n;
-            localStorage.setItem('ratings', JSON.stringify(ratings));
-            openModal(currentId);
-            render();
-        }
-
+        function setRate(n) { ratings[currentId] = n; localStorage.setItem('ratings', JSON.stringify(ratings)); openModal(currentId); render(); }
         function renderComments() {
             const list = comments[currentId] || [];
             const div = document.getElementById('mModalComments');
-            if(list.length === 0) div.innerHTML = '<p style="color:#718096">Нет комментариев</p>';
-            else div.innerHTML = list.map(c => `<div style="background:#f7fafc;padding:15px;border-radius:12px;margin-bottom:12px;"><b style="color:#667eea">${c.author}</b> <span style="font-size:0.85rem;color:#a0aec0">${c.date}</span><p style="margin:8px 0 0;color:#4a5568">${c.text}</p></div>`).join('');
+            if(list.length === 0) { div.innerHTML = '<p style="color:#718096">Нет комментариев</p>'; return; }
+            div.innerHTML = list.map(c => `<div style="background:#0f172a;padding:10px;border-radius:8px;margin-bottom:8px;"><b style="color:#818cf8">${c.author}</b> <span style="font-size:0.85rem;color:#64748b">${c.date}</span><p style="margin:5px 0 0;color:#cbd5e1">${c.text}</p></div>`).join('');
         }
-
         function addComment() {
             const txt = document.getElementById('mModalCommentInput').value.trim();
             if(!txt) return alert('Введите текст');
@@ -592,36 +303,16 @@
             document.getElementById('mModalCommentInput').value = '';
             renderComments();
         }
-
         function openTag(name) {
             const info = tagInfo[name];
             if(!info) return;
             document.getElementById('tModalTitle').textContent = info.title;
             document.getElementById('tModalTitle').style.color = info.color;
             document.getElementById('tagModalContent').style.borderColor = info.color;
-            document.getElementById('tModalBody').innerHTML = `
-                <div style="margin-bottom:25px; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
-                    <div style="font-size: 0.95rem; color: #94a3b8; margin-bottom: 8px;">👨‍🔬 Исследование:</div>
-                    <div style="font-weight: bold; color: #f1f5f9; font-size: 1.15rem;">${info.researcher}</div>
-                    <div style="font-style: italic; color: #cbd5e1; font-size: 0.95rem; margin-top: 8px;">"${info.study}"</div>
-                </div>
-                <div style="margin-bottom:25px;">
-                    <div style="font-weight: bold; color: #34d399; margin-bottom: 12px; display:flex; align-items:center; gap:10px; font-size: 1.1rem;">📊 Выявлено:</div>
-                    <div style="color: #e2e8f0; line-height: 1.7; font-size: 1.05rem;">${info.finding}</div>
-                </div>
-                <div style="margin-bottom:25px;">
-                    <div style="font-weight: bold; color: #f87171; margin-bottom: 12px; display:flex; align-items:center; gap:10px; font-size: 1.1rem;">⚠️ Влияние на ребёнка:</div>
-                    <div style="color: #e2e8f0; line-height: 1.7; font-size: 1.05rem;">${info.impact}</div>
-                </div>
-                <div style="background: rgba(102, 126, 234, 0.2); padding: 25px; border-radius: 15px; border-left: 5px solid ${info.color};">
-                    <div style="font-weight: bold; color: ${info.color}; margin-bottom: 12px; display:flex; align-items:center; gap:10px; font-size: 1.1rem;">💡 Рекомендация:</div>
-                    <div style="color: #e2e8f0; line-height: 1.7; font-size: 1.05rem;">${info.recommendation}</div>
-                </div>
-            `;
+            document.getElementById('tModalBody').innerHTML = `<div style="margin-bottom:20px;background:rgba(255,255,255,0.05);padding:15px;border-radius:8px;"><div style="font-size:0.9rem;color:#94a3b8">👨‍🔬 Исследование:</div><div style="font-weight:bold;color:#f1f5f9">${info.researcher}</div><div style="font-style:italic;color:#cbd5e1;font-size:0.9rem">${info.study}</div></div><div style="margin-bottom:20px;"><div style="font-weight:bold;color:#34d399;margin-bottom:8px">📊 Выявлено:</div><div style="color:#e2e8f0">${info.finding}</div></div><div style="margin-bottom:20px;"><div style="font-weight:bold;color:#f87171;margin-bottom:8px">⚠️ Влияние:</div><div style="color:#e2e8f0">${info.impact}</div></div><div style="background:rgba(102,126,234,0.2);padding:15px;border-radius:8px;border-left:4px solid ${info.color};"><div style="font-weight:bold;color:${info.color};margin-bottom:8px">💡 Рекомендация:</div><div style="color:#e2e8f0">${info.recommendation}</div></div>`;
             document.getElementById('tagModal').classList.add('active');
         }
         function closeTagModal() { document.getElementById('tagModal').classList.remove('active'); }
-
         render();
     </script>
 </body>
